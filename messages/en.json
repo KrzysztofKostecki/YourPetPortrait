@@ -1,0 +1,296 @@
+{
+  "Metadata": {
+    "homeDescription": "Custom hand-painted oil portraits of dogs and cats from your pet photo. Preview with AI, order with confidence.",
+    "signInTitle": "Sign in",
+    "signInDescription": "Sign in to create your custom pet portrait preview at {siteName}."
+  },
+  "Nav": {
+    "createPortrait": "Create Portrait",
+    "gallery": "Gallery",
+    "signIn": "Sign in",
+    "signOut": "Sign out",
+    "startPortrait": "Start portrait",
+    "searchPlaceholder": "Search portraits...",
+    "tagline": "Custom oil portraits",
+    "language": "Language",
+    "english": "English",
+    "polish": "Polish"
+  },
+  "Home": {
+    "hero": {
+      "eyebrow": "Pet Portrait Studio",
+      "title": "Your pet, painted like a <emphasis>masterpiece</emphasis>",
+      "description": "Upload a cherished photo, preview your portrait in our studio, refine every detail in conversation, and receive a hand-painted oil artwork made just for them.",
+      "ctaPrimary": "Begin your portrait",
+      "ctaSecondary": "Explore the gallery",
+      "stats": {
+        "handPaintedLabel": "Hand-painted",
+        "handPaintedValue": "By real artists",
+        "previewLabel": "AI preview",
+        "previewValue": "Before you order",
+        "qualityLabel": "Heirloom quality",
+        "qualityValue": "Made to last"
+      },
+      "slider": {
+        "before": "Your photo",
+        "after": "The painting",
+        "hint": "Drag the handle to watch the photo become a painting",
+        "aria": "Compare the original photo with the painted portrait"
+      },
+      "plaque": {
+        "title": "“Bailey”",
+        "subtitle": "Oil on canvas · 18 × 24 in"
+      },
+      "altPrimary": "Golden retriever portrait, photo and painted versions",
+      "altSecondary": "Cat portrait in a walnut frame"
+    },
+    "marquee": {
+      "items": {
+        "oil": "Oil on canvas",
+        "handPainted": "Hand-painted by real artists",
+        "preview": "AI preview before you commit",
+        "heirloom": "An heirloom for generations",
+        "love": "Made with love for pets"
+      }
+    },
+    "process": {
+      "eyebrow": "The process",
+      "title": "From snapshot to <emphasis>heirloom</emphasis>",
+      "steps": {
+        "1": {
+          "title": "Upload & tell their story",
+          "copy": "Sign in, share a clear photo, and choose style, background, size, and finish."
+        },
+        "2": {
+          "title": "Preview in the studio",
+          "copy": "Generate AI portrait previews and refine the direction with natural conversation."
+        },
+        "3": {
+          "title": "Painted with care",
+          "copy": "Your artist works from your photo and chosen preview. Checkout is seamless via Shopify."
+        }
+      }
+    },
+    "gallery": {
+      "eyebrow": "Style gallery",
+      "title": "Four directions, one beloved subject",
+      "description": "Each preset sets a distinct mood — from warm vintage glow to crisp modern realism — while preserving your pet's unique character.",
+      "viewAll": "View all portraits →",
+      "items": {
+        "warmVintage": {
+          "label": "Warm vintage",
+          "style": "Amber tones, soft brushwork"
+        },
+        "classicOil": {
+          "label": "Classic oil",
+          "style": "Timeless studio portrait"
+        },
+        "modernRealistic": {
+          "label": "Modern realistic",
+          "style": "Crisp detail, true likeness"
+        },
+        "lightImpressionist": {
+          "label": "Light impressionist",
+          "style": "Luminous, painterly light"
+        }
+      }
+    },
+    "testimonials": {
+      "eyebrow": "From their humans",
+      "title": "Hung with pride, loved for years",
+      "items": {
+        "t1": {
+          "quote": "We hung Bailey's portrait above the fireplace — guests always ask if it's an old family painting. It captures her exactly.",
+          "author": "Sarah M.",
+          "detail": "Golden retriever portrait · 16×20 framed"
+        },
+        "t2": {
+          "quote": "The preview made it easy to trust the process — the finished painting of Piksel is even better than what we imagined.",
+          "author": "Marta & Tomek",
+          "detail": "Pug portrait · a gift for grandma"
+        },
+        "t3": {
+          "quote": "It arrived beautifully packed with a handwritten note. Our cat Mochi looks like nobility — because she is.",
+          "author": "Daniel R.",
+          "detail": "Cat portrait · 12×16 canvas"
+        }
+      }
+    },
+    "faq": {
+      "eyebrow": "Questions",
+      "title": "Thoughtful answers, no surprises",
+      "description": "Custom artwork is personal. Here's what to expect from preview to delivery.",
+      "items": {
+        "preview": {
+          "q": "Are AI previews the final artwork?",
+          "a": "No. Previews help you explore direction and communicate with your artist. The finished piece is hand-painted with traditional oils on canvas."
+        },
+        "photo": {
+          "q": "What photos work best?",
+          "a": "Choose a sharp, well-lit image where your pet's face, markings, and expression are clearly visible. Natural daylight is ideal."
+        },
+        "revise": {
+          "q": "Can I revise the preview before ordering?",
+          "a": "Absolutely. Use quick suggestions or describe changes in your own words — warmer tones, softer fur, a cream background — until it feels right."
+        },
+        "afterOrder": {
+          "q": "What does my artist receive?",
+          "a": "Your order includes the original photo, selected preview, pet details, and notes — everything needed to paint your portrait with care."
+        }
+      }
+    },
+    "cta": {
+      "eyebrow": "Start today",
+      "title": "They deserve a place on your wall",
+      "description": "Open the studio, upload a photo, and see your pet transformed in minutes. Your hand-painted portrait follows when you're ready.",
+      "primary": "Create my portrait",
+      "secondary": "Sign in to preview",
+      "note": "AI preview included with every order — we only paint once you approve the direction.",
+      "frameAlt": "Framed oil portrait of a smiling dog"
+    }
+  },
+  "Footer": {
+    "tagline": "Every companion deserves to be remembered like a masterpiece.",
+    "description": "Hand-painted oil portraits of the companions who make a house feel like home. Preview with AI, painted with heart.",
+    "explore": "Explore",
+    "studio": "Studio",
+    "createPortrait": "Create a portrait",
+    "browseGallery": "Browse gallery",
+    "signInLink": "Sign in",
+    "rights": "All rights reserved.",
+    "madeFor": "Made for pet lovers"
+  },
+  "SignIn": {
+    "welcomeBack": "Welcome back",
+    "heroTitle": "Step into your private portrait studio",
+    "heroAlt": "Dog portrait in warm light",
+    "account": "Account",
+    "title": "Sign in to continue",
+    "description": "Save your preview session, generate portrait directions, and add your custom order to cart when you're ready.",
+    "continueGoogle": "Continue with Google",
+    "privacy": "By continuing, you agree to our use of uploaded pet photos for preview generation and order fulfillment."
+  },
+  "Auth": {
+    "studioAccess": "Studio access",
+    "signInPreview": "Sign in to create preview.",
+    "signInGoogle": "Sign in with Google"
+  },
+  "Product": {
+    "portraitStudio": "Portrait studio",
+    "collection": "Collection",
+    "related": "You may also love",
+    "devNoticeTitle": "Development preview",
+    "devNoticeBody": "Shopify is not configured yet, so this page uses a local mock product. Add your store credentials to .env.local and seed the product from docs/shopify-seed.md before checkout will work."
+  },
+  "Cart": {
+    "title": "Your cart",
+    "empty": "Your cart is empty.",
+    "taxes": "Taxes",
+    "shipping": "Shipping",
+    "shippingCalculated": "Calculated at checkout",
+    "total": "Total",
+    "checkout": "Proceed to Checkout",
+    "addToCart": "Add To Cart",
+    "outOfStock": "Out Of Stock",
+    "selectOption": "Please select an option"
+  },
+  "PortraitStudio": {
+    "disclaimer": "AI previews are approximate references for your hand-painted oil portrait. Final artwork is crafted by an artist using your photo and selected preview.",
+    "steps": {
+      "photo": "Their photo",
+      "style": "Style & details",
+      "refine": "Refine together",
+      "order": "Size & order"
+    },
+    "continue": "Continue",
+    "chooseSize": "Choose size & finish",
+    "stepIndicator": "Step {index} of {total}",
+    "photoStatusAdded": "Photo placed on the easel",
+    "photoStatusMissing": "First, place a photo on the easel",
+    "replacePhoto": "Replace photo",
+    "refineHint": "Tap a suggestion or describe a change in your own words — the studio repaints in moments.",
+    "versionsCount": "{count, plural, one {# version painted} other {# versions painted}}",
+    "stage": {
+      "dropTitle": "Place their photo on the easel",
+      "dropHint": "Drag & drop or browse — a sharp, well-lit photo works best (JPG, PNG, WEBP, HEIC)",
+      "dropActive": "Let go — the easel is ready",
+      "browse": "Choose a photo",
+      "uploading": "Stretching the canvas…",
+      "readyHint": "Beautiful. Now choose a style on the right and let the studio paint.",
+      "plaqueFallback": "Your masterpiece",
+      "plaqueMedium": "Oil on canvas",
+      "originalThumb": "Photo",
+      "signedOutTitle": "The easel is waiting",
+      "signedOutHint": "Sign in to place their photo and watch the portrait appear."
+    },
+    "painting": {
+      "title": "Painting {petName}…",
+      "patience": "Masterpieces take a moment",
+      "lines": {
+        "s1": "Preparing the canvas",
+        "s2": "Mixing amber and umber",
+        "s3": "Sketching the composition",
+        "s4": "Painting fur, stroke by stroke",
+        "s5": "Catching the light in their eyes",
+        "s6": "Applying the final varnish"
+      }
+    },
+    "compare": {
+      "before": "Your photo",
+      "after": "Preview",
+      "aria": "Compare your photo with the painted preview"
+    },
+    "uploadError": "Upload failed. Try a JPG or PNG.",
+    "uploadedAlt": "Uploaded pet photo",
+    "petName": "Pet name",
+    "petNamePlaceholder": "Bailey",
+    "petType": "Pet type",
+    "stylePreset": "Style preset",
+    "background": "Background",
+    "framing": "Framing",
+    "artistNotes": "Notes for the artist",
+    "artistNotesPlaceholder": "Collar color, favorite pose, or special details to preserve.",
+    "quotaLeft": "{count} left today",
+    "generating": "Painting…",
+    "generate": "Paint the preview",
+    "previewAlt": "Selected portrait preview",
+    "revisionPlaceholder": "Describe a revision, e.g. softer fur texture",
+    "revise": "Repaint with this change",
+    "thumbnailAlt": "Preview version",
+    "addToCart": "Add portrait to cart",
+    "petTypes": {
+      "Dog": "Dog",
+      "Cat": "Cat"
+    },
+    "styles": {
+      "classic-oil": "Classic oil",
+      "modern-realistic": "Modern realistic",
+      "warm-vintage": "Warm vintage",
+      "light-impressionist": "Light impressionist"
+    },
+    "backgrounds": {
+      "Neutral gray": "Neutral gray",
+      "Cream": "Cream",
+      "Soft blue": "Soft blue",
+      "Warm beige": "Warm beige",
+      "Dark charcoal": "Dark charcoal",
+      "Custom (describe in notes)": "Custom (describe in notes)"
+    },
+    "framingOptions": {
+      "Head and shoulders": "Head and shoulders",
+      "Chest up": "Chest up",
+      "Full body": "Full body"
+    },
+    "chips": {
+      "Warmer colors": "Warmer colors",
+      "Cream background": "Cream background",
+      "More realistic": "More realistic",
+      "Closer to original photo": "Closer to original photo",
+      "Softer brush strokes": "Softer brush strokes",
+      "Brighter lighting": "Brighter lighting"
+    },
+    "errors": {
+      "generationFailed": "Preview generation failed"
+    }
+  }
+}

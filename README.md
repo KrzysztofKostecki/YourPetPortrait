@@ -55,5 +55,6 @@ See `.env.example` for the full list. Key values:
 
 - `AI_GENERATION_DAILY_LIMIT` — successful previews per user per day (default 5)
 - `GEMINI_IMAGE_MODEL` — defaults to `gemini-2.5-flash-image`
-- `SITE_NAME` — defaults to `Pet Portrait Studio`
+- `NEXT_PUBLIC_SITE_NAME` — defaults to `Pet Portrait Studio`
+
 # YourPetPortrait

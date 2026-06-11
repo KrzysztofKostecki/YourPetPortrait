@@ -1,5 +1,6 @@
 import { ImageResponse } from "next/og";
 import LogoIcon from "./icons/logo";
+import { SITE_NAME } from "lib/site";
 import { join } from "path";
 import { readFile } from "fs/promises";
 
@@ -12,7 +13,7 @@ export default async function OpengraphImage(
 ): Promise<ImageResponse> {
   const { title } = {
     ...{
-      title: process.env.SITE_NAME,
+      title: SITE_NAME,
     },
     ...props,
   };

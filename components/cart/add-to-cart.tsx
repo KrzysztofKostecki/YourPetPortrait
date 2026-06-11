@@ -6,6 +6,7 @@ import { addItem } from "components/cart/actions";
 import { Product, ProductVariant } from "lib/shopify/types";
 import { useSearchParams } from "next/navigation";
 import { useActionState } from "react";
+import { useTranslations } from "next-intl";
 import { useCart } from "./cart-context";
 
 function SubmitButton({
@@ -15,14 +16,14 @@ function SubmitButton({
   availableForSale: boolean;
   selectedVariantId: string | undefined;
 }) {
-  const buttonClasses =
-    "relative flex w-full items-center justify-center rounded-full bg-blue-600 p-4 tracking-wide text-white";
+  const t = useTranslations("Cart");
+  const buttonClasses = "btn-primary relative w-full py-4";
   const disabledClasses = "cursor-not-allowed opacity-60 hover:opacity-60";
 
   if (!availableForSale) {
     return (
       <button disabled className={clsx(buttonClasses, disabledClasses)}>
-        Out Of Stock
+        {t("outOfStock")}
       </button>
     );
   }
@@ -30,21 +31,21 @@ function SubmitButton({
   if (!selectedVariantId) {
     return (
       <button
-        aria-label="Please select an option"
+        aria-label={t("selectOption")}
         disabled
         className={clsx(buttonClasses, disabledClasses)}
       >
         <div className="absolute left-0 ml-4">
           <PlusIcon className="h-5" />
         </div>
-        Add To Cart
+        {t("addToCart")}
       </button>
     );
   }
 
   return (
     <button
-      aria-label="Add to cart"
+      aria-label={t("addToCart")}
       className={clsx(buttonClasses, {
         "hover:opacity-90": true,
       })}
@@ -52,7 +53,7 @@ function SubmitButton({
       <div className="absolute left-0 ml-4">
         <PlusIcon className="h-5" />
       </div>
-      Add To Cart
+      {t("addToCart")}
     </button>
   );
 }

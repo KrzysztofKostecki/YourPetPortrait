@@ -23,6 +23,10 @@ const cartFragment = /* GraphQL */ `
         node {
           id
           quantity
+          attributes {
+            key
+            value
+          }
           cost {
             totalAmount {
               amount

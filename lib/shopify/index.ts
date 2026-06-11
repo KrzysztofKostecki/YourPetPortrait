@@ -3,6 +3,7 @@ import {
   SHOPIFY_GRAPHQL_API_ENDPOINT,
   TAGS,
 } from "lib/constants";
+import { getMockPortraitProduct } from "lib/portrait/mock-product";
 import { isShopifyError } from "lib/type-guards";
 import { ensureStartsWith } from "lib/utils";
 import {
@@ -33,6 +34,7 @@ import {
 } from "./queries/product";
 import {
   Cart,
+  CartLineInput,
   Collection,
   Connection,
   Image,
@@ -63,6 +65,10 @@ const domain = process.env.SHOPIFY_STORE_DOMAIN
   : "";
 const endpoint = domain ? `${domain}${SHOPIFY_GRAPHQL_API_ENDPOINT}` : "";
 const key = process.env.SHOPIFY_STOREFRONT_ACCESS_TOKEN!;
+
+export function isShopifyConfigured(): boolean {
+  return Boolean(domain && key);
+}
 
 type ExtractVariables<T> = T extends { variables: object }
   ? T["variables"]
@@ -140,8 +146,22 @@ const reshapeCart = (cart: ShopifyCart): Cart => {
   };
 };
 
+export function createEmptyCart(): Cart {
+  return {
+    id: undefined,
+    checkoutUrl: "",
+    totalQuantity: 0,
+    lines: [],
+    cost: {
+      subtotalAmount: { amount: "0.0", currencyCode: "USD" },
+      totalAmount: { amount: "0.0", currencyCode: "USD" },
+      totalTaxAmount: { amount: "0.0", currencyCode: "USD" },
+    },
+  };
+}
+
 const reshapeCollection = (
-  collection: ShopifyCollection
+  collection: ShopifyCollection,
 ): Collection | undefined => {
   if (!collection) {
     return undefined;
@@ -183,7 +203,7 @@ const reshapeImages = (images: Connection<Image>, productTitle: string) => {
 
 const reshapeProduct = (
   product: ShopifyProduct,
-  filterHiddenProducts: boolean = true
+  filterHiddenProducts: boolean = true,
 ) => {
   if (
     !product ||
@@ -201,10 +221,10 @@ const reshapeProduct = (
   };
 };
 
-const reshapeProducts = (products: ShopifyProduct[]) => {
+const reshapeProducts = (products: ShopifyProduct[] | null | undefined) => {
   const reshapedProducts = [];
 
-  for (const product of products) {
+  for (const product of products ?? []) {
     if (product) {
       const reshapedProduct = reshapeProduct(product);
 
@@ -218,6 +238,10 @@ const reshapeProducts = (products: ShopifyProduct[]) => {
 };
 
 export async function createCart(): Promise<Cart> {
+  if (!endpoint) {
+    return createEmptyCart();
+  }
+
   const res = await shopifyFetch<ShopifyCreateCartOperation>({
     query: createCartMutation,
   });
@@ -225,9 +249,11 @@ export async function createCart(): Promise<Cart> {
   return reshapeCart(res.body.data.cartCreate.cart);
 }
 
-export async function addToCart(
-  lines: { merchandiseId: string; quantity: number }[]
-): Promise<Cart> {
+export async function addToCart(lines: CartLineInput[]): Promise<Cart> {
+  if (!endpoint) {
+    throw new Error("Shopify is not configured");
+  }
+
   const cartId = (await cookies()).get("cartId")?.value!;
   const res = await shopifyFetch<ShopifyAddToCartOperation>({
     query: addToCartMutation,
@@ -240,6 +266,10 @@ export async function addToCart(
 }
 
 export async function removeFromCart(lineIds: string[]): Promise<Cart> {
+  if (!endpoint) {
+    throw new Error("Shopify is not configured");
+  }
+
   const cartId = (await cookies()).get("cartId")?.value!;
   const res = await shopifyFetch<ShopifyRemoveFromCartOperation>({
     query: removeFromCartMutation,
@@ -253,8 +283,12 @@ export async function removeFromCart(lineIds: string[]): Promise<Cart> {
 }
 
 export async function updateCart(
-  lines: { id: string; merchandiseId: string; quantity: number }[]
+  lines: { id: string; merchandiseId: string; quantity: number }[],
 ): Promise<Cart> {
+  if (!endpoint) {
+    throw new Error("Shopify is not configured");
+  }
+
   const cartId = (await cookies()).get("cartId")?.value!;
   const res = await shopifyFetch<ShopifyUpdateCartOperation>({
     query: editCartItemsMutation,
@@ -274,7 +308,7 @@ export async function getCart(): Promise<Cart | undefined> {
 
   const cartId = (await cookies()).get("cartId")?.value;
 
-  if (!cartId) {
+  if (!cartId || !endpoint) {
     return undefined;
   }
 
@@ -292,7 +326,7 @@ export async function getCart(): Promise<Cart | undefined> {
 }
 
 export async function getCollection(
-  handle: string
+  handle: string,
 ): Promise<Collection | undefined> {
   "use cache";
   cacheTag(TAGS.collections);
@@ -323,7 +357,7 @@ export async function getCollectionProducts({
 
   if (!endpoint) {
     console.log(
-      `Skipping getCollectionProducts for '${collection}' - Shopify not configured`
+      `Skipping getCollectionProducts for '${collection}' - Shopify not configured`,
     );
     return [];
   }
@@ -343,7 +377,7 @@ export async function getCollectionProducts({
   }
 
   return reshapeProducts(
-    removeEdgesAndNodes(res.body.data.collection.products)
+    removeEdgesAndNodes(res.body.data.collection.products),
   );
 }
 
@@ -388,7 +422,7 @@ export async function getCollections(): Promise<Collection[]> {
     // Filter out the `hidden` collections.
     // Collections that start with `hidden-*` need to be hidden on the search page.
     ...reshapeCollections(shopifyCollections).filter(
-      (collection) => !collection.handle.startsWith("hidden")
+      (collection) => !collection.handle.startsWith("hidden"),
     ),
   ];
 
@@ -446,8 +480,10 @@ export async function getProduct(handle: string): Promise<Product | undefined> {
   cacheLife("days");
 
   if (!endpoint) {
-    console.log(`Skipping getProduct for '${handle}' - Shopify not configured`);
-    return undefined;
+    console.log(
+      `Skipping getProduct for '${handle}' - Shopify not configured, using mock portrait product when available`,
+    );
+    return getMockPortraitProduct(handle);
   }
 
   const res = await shopifyFetch<ShopifyProductOperation>({
@@ -457,15 +493,32 @@ export async function getProduct(handle: string): Promise<Product | undefined> {
     },
   });
 
-  return reshapeProduct(res.body.data.product, false);
+  const product = reshapeProduct(res.body.data.product, false);
+  if (product) return product;
+
+  if (process.env.NODE_ENV === "development") {
+    const mock = getMockPortraitProduct(handle);
+    if (mock) {
+      console.log(
+        `Product '${handle}' not found in Shopify - serving development mock product`,
+      );
+      return mock;
+    }
+  }
+
+  return undefined;
 }
 
 export async function getProductRecommendations(
-  productId: string
+  productId: string,
 ): Promise<Product[]> {
   "use cache";
   cacheTag(TAGS.products);
   cacheLife("days");
+
+  if (!endpoint) {
+    return [];
+  }
 
   const res = await shopifyFetch<ShopifyProductRecommendationsOperation>({
     query: getProductRecommendationsQuery,

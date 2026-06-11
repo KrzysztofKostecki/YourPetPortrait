@@ -8,9 +8,10 @@ import Price from "components/price";
 import { DEFAULT_OPTION } from "lib/constants";
 import { createUrl } from "lib/utils";
 import Image from "next/image";
-import Link from "next/link";
+import { Link } from "i18n/navigation";
 import { Fragment, useEffect, useRef, useState } from "react";
 import { useFormStatus } from "react-dom";
+import { useTranslations } from "next-intl";
 import { createCartAndSetCookie, redirectToCheckout } from "./actions";
 import { useCart } from "./cart-context";
 import { DeleteItemButton } from "./delete-item-button";
@@ -22,6 +23,7 @@ type MerchandiseSearchParams = {
 };
 
 export default function CartModal() {
+  const t = useTranslations("Cart");
   const { cart, updateCartItem } = useCart();
   const [isOpen, setIsOpen] = useState(false);
   const quantityRef = useRef(cart?.totalQuantity);
@@ -74,9 +76,9 @@ export default function CartModal() {
             leaveFrom="translate-x-0"
             leaveTo="translate-x-full"
           >
-            <Dialog.Panel className="fixed bottom-0 right-0 top-0 flex h-full w-full flex-col border-l border-neutral-200 bg-white/80 p-6 text-black backdrop-blur-xl md:w-[390px] dark:border-neutral-700 dark:bg-black/80 dark:text-white">
+            <Dialog.Panel className="fixed bottom-0 right-0 top-0 flex h-full w-full flex-col border-l border-line bg-canvas/95 p-6 text-ink backdrop-blur-xl md:w-[420px] dark:border-white/10 dark:bg-canvas-dark/95 dark:text-canvas">
               <div className="flex items-center justify-between">
-                <p className="text-lg font-semibold">My Cart</p>
+                <p className="font-display text-2xl">{t("title")}</p>
                 <button aria-label="Close cart" onClick={closeCart}>
                   <CloseCart />
                 </button>
@@ -86,7 +88,7 @@ export default function CartModal() {
                 <div className="mt-20 flex w-full flex-col items-center justify-center overflow-hidden">
                   <ShoppingCartIcon className="h-16" />
                   <p className="mt-6 text-center text-2xl font-bold">
-                    Your cart is empty.
+                    {t("empty")}
                   </p>
                 </div>
               ) : (
@@ -159,6 +161,24 @@ export default function CartModal() {
                                         {item.merchandise.title}
                                       </p>
                                     ) : null}
+                                    {item.attributes?.length ? (
+                                      <ul className="mt-1 space-y-0.5 text-xs text-neutral-500 dark:text-neutral-400">
+                                        {item.attributes
+                                          .filter((attribute) =>
+                                            [
+                                              "petName",
+                                              "petType",
+                                              "background",
+                                              "stylePreset",
+                                            ].includes(attribute.key),
+                                          )
+                                          .map((attribute) => (
+                                            <li key={attribute.key}>
+                                              {attribute.key}: {attribute.value}
+                                            </li>
+                                          ))}
+                                      </ul>
+                                    ) : null}
                                   </div>
                                 </Link>
                               </div>
@@ -195,7 +215,7 @@ export default function CartModal() {
                   </ul>
                   <div className="py-4 text-sm text-neutral-500 dark:text-neutral-400">
                     <div className="mb-3 flex items-center justify-between border-b border-neutral-200 pb-1 dark:border-neutral-700">
-                      <p>Taxes</p>
+                      <p>{t("taxes")}</p>
                       <Price
                         className="text-right text-base text-black dark:text-white"
                         amount={cart.cost.totalTaxAmount.amount}
@@ -203,11 +223,11 @@ export default function CartModal() {
                       />
                     </div>
                     <div className="mb-3 flex items-center justify-between border-b border-neutral-200 pb-1 pt-1 dark:border-neutral-700">
-                      <p>Shipping</p>
-                      <p className="text-right">Calculated at checkout</p>
+                      <p>{t("shipping")}</p>
+                      <p className="text-right">{t("shippingCalculated")}</p>
                     </div>
                     <div className="mb-3 flex items-center justify-between border-b border-neutral-200 pb-1 pt-1 dark:border-neutral-700">
-                      <p>Total</p>
+                      <p>{t("total")}</p>
                       <Price
                         className="text-right text-base text-black dark:text-white"
                         amount={cart.cost.totalAmount.amount}
@@ -242,15 +262,16 @@ function CloseCart({ className }: { className?: string }) {
 }
 
 function CheckoutButton() {
+  const t = useTranslations("Cart");
   const { pending } = useFormStatus();
 
   return (
     <button
-      className="block w-full rounded-full bg-blue-600 p-3 text-center text-sm font-medium text-white opacity-90 hover:opacity-100"
+      className="btn-primary block w-full py-3.5 text-center text-sm disabled:cursor-not-allowed disabled:opacity-60"
       type="submit"
       disabled={pending}
     >
-      {pending ? <LoadingDots className="bg-white" /> : "Proceed to Checkout"}
+      {pending ? <LoadingDots className="bg-white" /> : t("checkout")}
     </button>
   );
 }

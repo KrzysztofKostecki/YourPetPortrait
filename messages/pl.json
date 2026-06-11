@@ -1,0 +1,296 @@
+{
+  "Metadata": {
+    "homeDescription": "Ręcznie malowane portrety olejne psów i kotów na podstawie Twojego zdjęcia. Podgląd z AI i pewne zamówienie.",
+    "signInTitle": "Logowanie",
+    "signInDescription": "Zaloguj się, aby stworzyć podgląd portretu swojego pupila w {siteName}."
+  },
+  "Nav": {
+    "createPortrait": "Stwórz portret",
+    "gallery": "Galeria",
+    "signIn": "Zaloguj się",
+    "signOut": "Wyloguj się",
+    "startPortrait": "Zacznij portret",
+    "searchPlaceholder": "Szukaj portretów...",
+    "tagline": "Portrety olejne na zamówienie",
+    "language": "Język",
+    "english": "English",
+    "polish": "Polski"
+  },
+  "Home": {
+    "hero": {
+      "eyebrow": "Pet Portrait Studio",
+      "title": "Twój pupil namalowany jak <emphasis>dzieło sztuki</emphasis>",
+      "description": "Prześlij ulubione zdjęcie, zobacz podgląd w naszym studio, dopracuj każdy szczegół w rozmowie i odbierz ręcznie malowany portret olejny stworzony specjalnie dla niego.",
+      "ctaPrimary": "Rozpocznij portret",
+      "ctaSecondary": "Zobacz galerię",
+      "stats": {
+        "handPaintedLabel": "Ręcznie malowane",
+        "handPaintedValue": "Przez prawdziwych artystów",
+        "previewLabel": "Podgląd AI",
+        "previewValue": "Zanim zamówisz",
+        "qualityLabel": "Jakość na lata",
+        "qualityValue": "Stworzone by trwać"
+      },
+      "slider": {
+        "before": "Twoje zdjęcie",
+        "after": "Obraz",
+        "hint": "Przeciągnij uchwyt, aby zobaczyć, jak zdjęcie staje się obrazem",
+        "aria": "Porównaj oryginalne zdjęcie z namalowanym portretem"
+      },
+      "plaque": {
+        "title": "„Bailey”",
+        "subtitle": "Olej na płótnie · 46 × 61 cm"
+      },
+      "altPrimary": "Portret golden retrievera — wersja fotograficzna i malarska",
+      "altSecondary": "Portret kota w orzechowej ramie"
+    },
+    "marquee": {
+      "items": {
+        "oil": "Olej na płótnie",
+        "handPainted": "Ręcznie malowane przez artystów",
+        "preview": "Podgląd AI przed zamówieniem",
+        "heirloom": "Pamiątka na pokolenia",
+        "love": "Tworzone z miłości do zwierząt"
+      }
+    },
+    "process": {
+      "eyebrow": "Proces",
+      "title": "Od zdjęcia do <emphasis>pamiątki</emphasis>",
+      "steps": {
+        "1": {
+          "title": "Prześlij zdjęcie i opowiedz historię",
+          "copy": "Zaloguj się, dodaj wyraźne zdjęcie i wybierz styl, tło, rozmiar oraz wykończenie."
+        },
+        "2": {
+          "title": "Podgląd w studio",
+          "copy": "Generuj podglądy portretu AI i dopracowuj kierunek w naturalnej rozmowie."
+        },
+        "3": {
+          "title": "Malowane z troską",
+          "copy": "Artysta pracuje na podstawie Twojego zdjęcia i wybranego podglądu. Zamówienie realizujesz przez Shopify."
+        }
+      }
+    },
+    "gallery": {
+      "eyebrow": "Galeria stylów",
+      "title": "Cztery kierunki, jeden ukochany bohater",
+      "description": "Każdy preset nadaje inny nastrój — od ciepłego vintage po wyrazisty realizm — zachowując charakter Twojego pupila.",
+      "viewAll": "Zobacz wszystkie portrety →",
+      "items": {
+        "warmVintage": {
+          "label": "Ciepły vintage",
+          "style": "Bursztynowe tony, miękkie pociągnięcia"
+        },
+        "classicOil": {
+          "label": "Klasyczny olej",
+          "style": "Ponadczasowy portret studyjny"
+        },
+        "modernRealistic": {
+          "label": "Nowoczesny realizm",
+          "style": "Wyraźne detale, wierne podobieństwo"
+        },
+        "lightImpressionist": {
+          "label": "Lekki impresjonizm",
+          "style": "Świetliste, malarskie światło"
+        }
+      }
+    },
+    "testimonials": {
+      "eyebrow": "Od ich ludzi",
+      "title": "Wiszą dumnie, cieszą latami",
+      "items": {
+        "t1": {
+          "quote": "Powiesiliśmy portret Bailey nad kominkiem — goście zawsze pytają, czy to stary obraz rodzinny. Jest wierny w każdym detalu.",
+          "author": "Sarah M.",
+          "detail": "Portret golden retrievera · 16×20 w ramie"
+        },
+        "t2": {
+          "quote": "Dzięki podglądowi łatwo było zaufać całemu procesowi — gotowy obraz Piksela jest jeszcze piękniejszy, niż sobie wyobrażaliśmy.",
+          "author": "Marta i Tomek",
+          "detail": "Portret mopsa · prezent dla babci"
+        },
+        "t3": {
+          "quote": "Przesyłka dotarła pięknie zapakowana, z odręcznym liścikiem. Nasza kotka Mochi wygląda jak arystokratka — bo nią jest.",
+          "author": "Daniel R.",
+          "detail": "Portret kota · płótno 30×40 cm"
+        }
+      }
+    },
+    "faq": {
+      "eyebrow": "Pytania",
+      "title": "Jasne odpowiedzi, bez niespodzianek",
+      "description": "Sztuka na zamówienie to coś osobistego. Oto czego możesz oczekiwać od podglądu do dostawy.",
+      "items": {
+        "preview": {
+          "q": "Czy podglądy AI to finalne dzieło?",
+          "a": "Nie. Podglądy pomagają określić kierunek i porozumieć się z artystą. Gotowy obraz jest ręcznie malowany tradycyjnymi farbami olejnymi."
+        },
+        "photo": {
+          "q": "Jakie zdjęcia sprawdzają się najlepiej?",
+          "a": "Wybierz ostre, dobrze oświetlone ujęcie, na którym widać twarz, umaszczenie i wyraz pupila. Najlepiej w naturalnym świetle dziennym."
+        },
+        "revise": {
+          "q": "Czy mogę poprawić podgląd przed zamówieniem?",
+          "a": "Oczywiście. Użyj szybkich sugestii lub opisz zmiany własnymi słowami — cieplejsze tony, miększe futro, kremowe tło — aż będzie dobrze."
+        },
+        "afterOrder": {
+          "q": "Co otrzymuje artysta?",
+          "a": "W zamówieniu znajduje się oryginalne zdjęcie, wybrany podgląd, dane pupila i notatki — wszystko, czego potrzeba do namalowania portretu."
+        }
+      }
+    },
+    "cta": {
+      "eyebrow": "Zacznij dziś",
+      "title": "Zasługują na miejsce na Twojej ścianie",
+      "description": "Otwórz studio, dodaj zdjęcie i zobacz pupila w nowej odsłonie w kilka minut. Ręcznie malowany portret powstanie, gdy będziesz gotowy.",
+      "primary": "Stwórz mój portret",
+      "secondary": "Zaloguj się do podglądu",
+      "note": "Podgląd AI w każdym zamówieniu — malujemy dopiero, gdy zaakceptujesz kierunek.",
+      "frameAlt": "Oprawiony portret olejny uśmiechniętego psa"
+    }
+  },
+  "Footer": {
+    "tagline": "Każdy towarzysz zasługuje, by zapamiętano go jak dzieło sztuki.",
+    "description": "Ręcznie malowane portrety olejne towarzyszy, dzięki którym dom staje się domem. Podgląd z AI, malowane z sercem.",
+    "explore": "Odkrywaj",
+    "studio": "Studio",
+    "createPortrait": "Stwórz portret",
+    "browseGallery": "Przeglądaj galerię",
+    "signInLink": "Zaloguj się",
+    "rights": "Wszelkie prawa zastrzeżone.",
+    "madeFor": "Stworzone dla miłośników zwierząt"
+  },
+  "SignIn": {
+    "welcomeBack": "Witaj ponownie",
+    "heroTitle": "Wejdź do swojego prywatnego studia portretowego",
+    "heroAlt": "Portret psa w ciepłym świetle",
+    "account": "Konto",
+    "title": "Zaloguj się, aby kontynuować",
+    "description": "Zapisuj sesję podglądu, generuj kierunki portretu i dodaj zamówienie do koszyka, gdy będziesz gotowy.",
+    "continueGoogle": "Kontynuuj przez Google",
+    "privacy": "Kontynuując, akceptujesz wykorzystanie przesłanych zdjęć pupili do generowania podglądów i realizacji zamówienia."
+  },
+  "Auth": {
+    "studioAccess": "Dostęp do studia",
+    "signInPreview": "Zaloguj się, aby stworzyć podgląd.",
+    "signInGoogle": "Zaloguj się przez Google"
+  },
+  "Product": {
+    "portraitStudio": "Studio portretu",
+    "collection": "Kolekcja",
+    "related": "Może Ci się spodobać",
+    "devNoticeTitle": "Podgląd deweloperski",
+    "devNoticeBody": "Shopify nie jest jeszcze skonfigurowany, więc ta strona używa lokalnego produktu testowego. Dodaj dane sklepu do .env.local i utwórz produkt według docs/shopify-seed.md, zanim checkout zacznie działać."
+  },
+  "Cart": {
+    "title": "Twój koszyk",
+    "empty": "Twój koszyk jest pusty.",
+    "taxes": "Podatki",
+    "shipping": "Wysyłka",
+    "shippingCalculated": "Obliczana przy kasie",
+    "total": "Razem",
+    "checkout": "Przejdź do kasy",
+    "addToCart": "Dodaj do koszyka",
+    "outOfStock": "Brak w magazynie",
+    "selectOption": "Wybierz opcję"
+  },
+  "PortraitStudio": {
+    "disclaimer": "Podglądy AI są orientacyjną referencją dla ręcznie malowanego portretu olejnego. Finalne dzieło tworzy artysta na podstawie Twojego zdjęcia i wybranego podglądu.",
+    "steps": {
+      "photo": "Zdjęcie pupila",
+      "style": "Styl i detale",
+      "refine": "Dopracuj wspólnie",
+      "order": "Rozmiar i zamówienie"
+    },
+    "continue": "Dalej",
+    "chooseSize": "Wybierz rozmiar i wykończenie",
+    "stepIndicator": "Krok {index} z {total}",
+    "photoStatusAdded": "Zdjęcie jest na sztaludze",
+    "photoStatusMissing": "Najpierw umieść zdjęcie na sztaludze",
+    "replacePhoto": "Zmień zdjęcie",
+    "refineHint": "Wybierz podpowiedź lub opisz zmianę własnymi słowami — studio przemaluje obraz w chwilę.",
+    "versionsCount": "{count, plural, one {# namalowana wersja} few {# namalowane wersje} many {# namalowanych wersji} other {# wersji}}",
+    "stage": {
+      "dropTitle": "Umieść zdjęcie na sztaludze",
+      "dropHint": "Przeciągnij i upuść lub wybierz plik — najlepiej ostre, dobrze oświetlone zdjęcie (JPG, PNG, WEBP, HEIC)",
+      "dropActive": "Puść — sztaluga jest gotowa",
+      "browse": "Wybierz zdjęcie",
+      "uploading": "Naciągamy płótno…",
+      "readyHint": "Pięknie. Teraz wybierz styl po prawej i pozwól studiu malować.",
+      "plaqueFallback": "Twoje dzieło",
+      "plaqueMedium": "Olej na płótnie",
+      "originalThumb": "Zdjęcie",
+      "signedOutTitle": "Sztaluga czeka",
+      "signedOutHint": "Zaloguj się, aby umieścić zdjęcie i zobaczyć, jak powstaje portret."
+    },
+    "painting": {
+      "title": "Powstaje portret: {petName}…",
+      "patience": "Arcydzieła potrzebują chwili",
+      "lines": {
+        "s1": "Przygotowujemy płótno",
+        "s2": "Mieszamy bursztyn i umbrę",
+        "s3": "Szkicujemy kompozycję",
+        "s4": "Malujemy futro, pociągnięcie po pociągnięciu",
+        "s5": "Łapiemy światło w spojrzeniu",
+        "s6": "Nakładamy końcowy werniks"
+      }
+    },
+    "compare": {
+      "before": "Twoje zdjęcie",
+      "after": "Podgląd",
+      "aria": "Porównaj zdjęcie z namalowanym podglądem"
+    },
+    "uploadError": "Przesyłanie nie powiodło się. Spróbuj JPG lub PNG.",
+    "uploadedAlt": "Przesłane zdjęcie pupila",
+    "petName": "Imię pupila",
+    "petNamePlaceholder": "Bailey",
+    "petType": "Rodzaj zwierzęcia",
+    "stylePreset": "Preset stylu",
+    "background": "Tło",
+    "framing": "Kadr",
+    "artistNotes": "Notatki dla artysty",
+    "artistNotesPlaceholder": "Kolor obroży, ulubiona poza lub szczegóły do zachowania.",
+    "quotaLeft": "Pozostało dziś: {count}",
+    "generating": "Malowanie…",
+    "generate": "Namaluj podgląd",
+    "previewAlt": "Wybrany podgląd portretu",
+    "revisionPlaceholder": "Opisz poprawkę, np. miększa tekstura futra",
+    "revise": "Przemaluj z tą zmianą",
+    "thumbnailAlt": "Wersja podglądu",
+    "addToCart": "Dodaj portret do koszyka",
+    "petTypes": {
+      "Dog": "Pies",
+      "Cat": "Kot"
+    },
+    "styles": {
+      "classic-oil": "Klasyczny olej",
+      "modern-realistic": "Nowoczesny realizm",
+      "warm-vintage": "Ciepły vintage",
+      "light-impressionist": "Lekki impresjonizm"
+    },
+    "backgrounds": {
+      "Neutral gray": "Neutralna szarość",
+      "Cream": "Krem",
+      "Soft blue": "Miękki błękit",
+      "Warm beige": "Ciepły beż",
+      "Dark charcoal": "Ciemny grafit",
+      "Custom (describe in notes)": "Własne (opisz w notatkach)"
+    },
+    "framingOptions": {
+      "Head and shoulders": "Głowa i barki",
+      "Chest up": "Do piersi",
+      "Full body": "Cała sylwetka"
+    },
+    "chips": {
+      "Warmer colors": "Cieplejsze kolory",
+      "Cream background": "Kremowe tło",
+      "More realistic": "Bardziej realistycznie",
+      "Closer to original photo": "Bliżej oryginalnego zdjęcia",
+      "Softer brush strokes": "Miększe pociągnięcia pędzla",
+      "Brighter lighting": "Jaśniejsze oświetlenie"
+    },
+    "errors": {
+      "generationFailed": "Generowanie podglądu nie powiodło się"
+    }
+  }
+}

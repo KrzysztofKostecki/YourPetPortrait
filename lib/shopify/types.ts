@@ -19,9 +19,21 @@ export type CartProduct = {
   featuredImage: Image;
 };
 
+export type CartLineAttribute = {
+  key: string;
+  value: string;
+};
+
+export type CartLineInput = {
+  merchandiseId: string;
+  quantity: number;
+  attributes?: CartLineAttribute[];
+};
+
 export type CartItem = {
   id: string | undefined;
   quantity: number;
+  attributes: CartLineAttribute[];
   cost: {
     totalAmount: Money;
   };
@@ -156,10 +168,7 @@ export type ShopifyAddToCartOperation = {
   };
   variables: {
     cartId: string;
-    lines: {
-      merchandiseId: string;
-      quantity: number;
-    }[];
+    lines: CartLineInput[];
   };
 };
 

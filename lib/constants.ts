@@ -47,5 +47,22 @@ export const TAGS = {
 };
 
 export const HIDDEN_PRODUCT_TAG = "nextjs-frontend-hidden";
+export const CUSTOM_PORTRAIT_TAG = "custom-portrait";
+export const CUSTOM_PORTRAIT_HANDLE = "custom-pet-oil-portrait";
 export const DEFAULT_OPTION = "Default Title";
 export const SHOPIFY_GRAPHQL_API_ENDPOINT = "/api/2023-01/graphql.json";
+
+export const PORTRAIT_CART_ATTRIBUTES = [
+  "petName",
+  "petType",
+  "background",
+  "artistNotes",
+  "sourcePhotoUrl",
+  "selectedPreviewUrl",
+  "previewSessionId",
+  "stylePreset",
+  "promptVersion",
+] as const;
+
+export type PortraitCartAttributeKey =
+  (typeof PORTRAIT_CART_ATTRIBUTES)[number];

@@ -8,13 +8,15 @@ import {
   removeFromCart,
   updateCart,
 } from "lib/shopify";
+import { buildPortraitCartAttributes } from "lib/portrait/cart";
+import type { StylePresetId } from "lib/portrait/constants";
 import { updateTag } from "next/cache";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
 export async function addItem(
   prevState: any,
-  selectedVariantId: string | undefined
+  selectedVariantId: string | undefined,
 ) {
   if (!selectedVariantId) {
     return "Error adding item to cart";
@@ -28,6 +30,51 @@ export async function addItem(
   }
 }
 
+export async function addPortraitItem(
+  prevState: any,
+  payload: {
+    merchandiseId: string;
+    petName: string;
+    petType: string;
+    background: string;
+    artistNotes: string;
+    sourcePhotoUrl: string;
+    selectedPreviewUrl: string;
+    previewSessionId: string;
+    stylePreset: string;
+  },
+) {
+  if (!payload.merchandiseId) {
+    return "Select size and finish options first";
+  }
+
+  if (!payload.selectedPreviewUrl || !payload.sourcePhotoUrl) {
+    return "Generate and select a preview before adding to cart";
+  }
+
+  try {
+    await addToCart([
+      {
+        merchandiseId: payload.merchandiseId,
+        quantity: 1,
+        attributes: buildPortraitCartAttributes({
+          petName: payload.petName,
+          petType: payload.petType,
+          background: payload.background,
+          artistNotes: payload.artistNotes,
+          sourcePhotoUrl: payload.sourcePhotoUrl,
+          selectedPreviewUrl: payload.selectedPreviewUrl,
+          previewSessionId: payload.previewSessionId,
+          stylePreset: payload.stylePreset as StylePresetId,
+        }),
+      },
+    ]);
+    updateTag(TAGS.cart);
+  } catch (e) {
+    return "Error adding portrait to cart";
+  }
+}
+
 export async function removeItem(prevState: any, merchandiseId: string) {
   try {
     const cart = await getCart();
@@ -37,7 +84,7 @@ export async function removeItem(prevState: any, merchandiseId: string) {
     }
 
     const lineItem = cart.lines.find(
-      (line) => line.merchandise.id === merchandiseId
+      (line) => line.merchandise.id === merchandiseId,
     );
 
     if (lineItem && lineItem.id) {
@@ -56,7 +103,7 @@ export async function updateItemQuantity(
   payload: {
     merchandiseId: string;
     quantity: number;
-  }
+  },
 ) {
   const { merchandiseId, quantity } = payload;
 
@@ -68,7 +115,7 @@ export async function updateItemQuantity(
     }
 
     const lineItem = cart.lines.find(
-      (line) => line.merchandise.id === merchandiseId
+      (line) => line.merchandise.id === merchandiseId,
     );
 
     if (lineItem && lineItem.id) {
@@ -102,5 +149,7 @@ export async function redirectToCheckout() {
 
 export async function createCartAndSetCookie() {
   let cart = await createCart();
-  (await cookies()).set("cartId", cart.id!);
+  if (cart.id) {
+    (await cookies()).set("cartId", cart.id);
+  }
 }

@@ -1,8 +1,8 @@
 "use client";
 
 import { Dialog, Transition } from "@headlessui/react";
-import Link from "next/link";
-import { usePathname, useSearchParams } from "next/navigation";
+import { Link, usePathname } from "i18n/navigation";
+import { useSearchParams } from "next/navigation";
 import { Fragment, Suspense, useEffect, useState } from "react";
 
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
@@ -35,7 +35,7 @@ export default function MobileMenu({ menu }: { menu: Menu[] }) {
       <button
         onClick={openMobileMenu}
         aria-label="Open mobile menu"
-        className="flex h-11 w-11 items-center justify-center rounded-md border border-neutral-200 text-black transition-colors md:hidden dark:border-neutral-700 dark:text-white"
+        className="flex h-11 w-11 items-center justify-center rounded-full border border-line bg-white/70 text-ink md:hidden dark:border-white/10 dark:bg-white/5 dark:text-canvas"
       >
         <Bars3Icon className="h-4" />
       </button>

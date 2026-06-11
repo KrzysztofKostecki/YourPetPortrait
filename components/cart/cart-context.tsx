@@ -76,6 +76,7 @@ function createOrUpdateCartItem(
   return {
     id: existingItem?.id,
     quantity,
+    attributes: existingItem?.attributes ?? [],
     cost: {
       totalAmount: {
         amount: totalAmount,
