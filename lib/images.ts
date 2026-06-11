@@ -3,8 +3,9 @@ function unsplash(id: string, width: number) {
 }
 
 export const showcaseImages = {
-  // Hero: golden retriever close-up — the photo→painting reveal subject
-  heroSlider: unsplash("1587300003388-59208cc962cb", 1200),
+  // Hero before/after: real customer photo → hand-painted portrait
+  heroPhoto: "/images/hero/photo.png",
+  heroPainting: "/images/hero/painting.png",
   // Smaller companion frame hung beside the hero
   heroCompanion: unsplash("1573865526739-10659fec78a5", 700),
   gallery: [

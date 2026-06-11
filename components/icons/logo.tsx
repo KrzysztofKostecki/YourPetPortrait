@@ -1,43 +1,61 @@
-import clsx from "clsx";
-
 export default function LogoIcon(props: React.ComponentProps<"svg">) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       aria-hidden="true"
-      viewBox="0 0 40 40"
+      viewBox="0 0 48 48"
       fill="none"
       {...props}
     >
-      <rect
-        x="4"
-        y="4"
-        width="32"
-        height="32"
-        rx="2"
-        className="stroke-current"
+      {/* Cameo frame */}
+      <ellipse
+        cx="24"
+        cy="24"
+        rx="16.5"
+        ry="20.5"
+        stroke="currentColor"
         strokeWidth="1.5"
       />
-      <rect
-        x="8"
-        y="8"
-        width="24"
-        height="24"
-        rx="1"
-        className="stroke-current opacity-50"
-        strokeWidth="1"
+      <ellipse
+        cx="24"
+        cy="24"
+        rx="13.8"
+        ry="17.8"
+        stroke="currentColor"
+        strokeWidth="0.9"
+        opacity="0.45"
       />
+      {/* Dog bust in profile, eye as a cutout */}
       <path
-        d="M20 14.5C17.5 14.5 16 16.2 16 18.2C16 20.8 18.2 22.5 20 24.5C21.8 22.5 24 20.8 24 18.2C24 16.2 22.5 14.5 20 14.5Z"
-        className="fill-current"
+        d="M13 26.5
+           C13.2 25.4 14.8 23.4 18 21.5
+           C19 20.9 20.3 19.9 21.5 18
+           C22.2 15.5 23 12.8 24 11
+           C25 12.8 26.2 15.6 27 17.5
+           C28 18.3 29.5 19.5 30.2 21
+           C31.5 23.5 32.6 26.5 33 30
+           C33.2 32 32.8 34 31.5 35
+           C27 36.5 21 36.5 18 35
+           C16.8 33.4 15.6 30.4 15 28.5
+           C14.4 27.6 13.6 27 13 26.5
+           Z
+           M20.55 23.4
+           a0.95 0.95 0 1 1 -1.9 0
+           a0.95 0.95 0 1 1 1.9 0
+           Z"
+        fill="currentColor"
+        fillRule="evenodd"
       />
-      <circle cx="17.5" cy="17.5" r="0.75" className="fill-current" />
-      <circle cx="22.5" cy="17.5" r="0.75" className="fill-current" />
+      {/* Preview sparkle */}
       <path
-        d="M17 26.5C17.8 27.3 18.8 27.8 20 27.8C21.2 27.8 22.2 27.3 23 26.5"
-        className="stroke-current"
-        strokeWidth="1.2"
-        strokeLinecap="round"
+        d="M30.5 10.8
+           Q31 12.2 32.4 12.7
+           Q31 13.2 30.5 14.6
+           Q30 13.2 28.6 12.7
+           Q30 12.2 30.5 10.8
+           Z"
+        fill="currentColor"
+        opacity="0.7"
       />
     </svg>
   );

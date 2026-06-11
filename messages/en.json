@@ -41,7 +41,7 @@
         "title": "“Bailey”",
         "subtitle": "Oil on canvas · 18 × 24 in"
       },
-      "altPrimary": "Golden retriever portrait, photo and painted versions",
+      "altPrimary": "Border collie portrait, photo and painted versions",
       "altSecondary": "Cat portrait in a walnut frame"
     },
     "marquee": {
@@ -208,6 +208,8 @@
     "photoStatusAdded": "Photo placed on the easel",
     "photoStatusMissing": "First, place a photo on the easel",
     "replacePhoto": "Replace photo",
+    "startOver": "Start over",
+    "startOverConfirm": "Start from the beginning? Your photo, previews, and choices will be cleared.",
     "refineHint": "Tap a suggestion or describe a change in your own words — the studio repaints in moments.",
     "versionsCount": "{count, plural, one {# version painted} other {# versions painted}}",
     "stage": {

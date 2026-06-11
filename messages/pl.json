@@ -41,7 +41,7 @@
         "title": "„Bailey”",
         "subtitle": "Olej na płótnie · 46 × 61 cm"
       },
-      "altPrimary": "Portret golden retrievera — wersja fotograficzna i malarska",
+      "altPrimary": "Portret border collie — wersja fotograficzna i malarska",
       "altSecondary": "Portret kota w orzechowej ramie"
     },
     "marquee": {
@@ -208,6 +208,8 @@
     "photoStatusAdded": "Zdjęcie jest na sztaludze",
     "photoStatusMissing": "Najpierw umieść zdjęcie na sztaludze",
     "replacePhoto": "Zmień zdjęcie",
+    "startOver": "Zacznij od nowa",
+    "startOverConfirm": "Zacząć od początku? Zdjęcie, podglądy i wybory zostaną usunięte.",
     "refineHint": "Wybierz podpowiedź lub opisz zmianę własnymi słowami — studio przemaluje obraz w chwilę.",
     "versionsCount": "{count, plural, one {# namalowana wersja} few {# namalowane wersje} many {# namalowanych wersji} other {# wersji}}",
     "stage": {

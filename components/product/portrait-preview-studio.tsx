@@ -47,6 +47,33 @@ type PreviewEntry = {
 
 type StepId = "photo" | "style" | "refine" | "order";
 
+const STORAGE_KEY = "portrait-studio:v1";
+
+type PersistedState = {
+  petName: string;
+  petType: string;
+  stylePreset: StylePresetId;
+  background: string;
+  framing: string;
+  artistNotes: string;
+  sourcePhotoUrl: string;
+  sessionId?: string;
+  previews: PreviewEntry[];
+  selectedPreviewId?: string;
+  activeStep: StepId;
+};
+
+function readPersistedState(): Partial<PersistedState> | null {
+  try {
+    const raw = window.localStorage.getItem(STORAGE_KEY);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw);
+    return parsed && typeof parsed === "object" ? parsed : null;
+  } catch {
+    return null;
+  }
+}
+
 const STYLE_THUMBS: Record<StylePresetId, string> = {
   "warm-vintage": showcaseImages.gallery[0]!.src,
   "classic-oil": showcaseImages.gallery[1]!.src,
@@ -176,6 +203,7 @@ export function PortraitPreviewStudio({ product }: { product: Product }) {
   const [remainingQuota, setRemainingQuota] = useState<number | null>(null);
   const [activeStep, setActiveStep] = useState<StepId>("photo");
   const [statusIndex, setStatusIndex] = useState(0);
+  const [hydrated, setHydrated] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const easelRef = useRef<HTMLDivElement>(null);
   const railRef = useRef<HTMLDivElement>(null);
@@ -193,6 +221,131 @@ export function PortraitPreviewStudio({ product }: { product: Product }) {
     if (isMobileViewport()) {
       railRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
     }
+  }
+
+  // Restore an in-progress session from localStorage on first mount.
+  useEffect(() => {
+    const saved = readPersistedState();
+    if (saved) {
+      if (typeof saved.petName === "string") setPetName(saved.petName);
+      if (
+        saved.petType &&
+        (PET_TYPES as readonly string[]).includes(saved.petType)
+      ) {
+        setPetType(saved.petType);
+      }
+      if (
+        saved.stylePreset &&
+        STYLE_PRESETS.some((preset) => preset.id === saved.stylePreset)
+      ) {
+        setStylePreset(saved.stylePreset);
+      }
+      if (
+        saved.background &&
+        (BACKGROUND_OPTIONS as readonly string[]).includes(saved.background)
+      ) {
+        setBackground(saved.background);
+      }
+      if (
+        saved.framing &&
+        (FRAMING_OPTIONS as readonly string[]).includes(saved.framing)
+      ) {
+        setFraming(saved.framing);
+      }
+      if (typeof saved.artistNotes === "string") {
+        setArtistNotes(saved.artistNotes);
+      }
+      if (typeof saved.sourcePhotoUrl === "string") {
+        setSourcePhotoUrl(saved.sourcePhotoUrl);
+      }
+      if (typeof saved.sessionId === "string") setSessionId(saved.sessionId);
+      const savedPreviews = Array.isArray(saved.previews)
+        ? saved.previews.filter(
+            (entry): entry is PreviewEntry =>
+              Boolean(entry) &&
+              typeof entry.id === "string" &&
+              typeof entry.url === "string",
+          )
+        : [];
+      if (savedPreviews.length > 0) {
+        setPreviews(savedPreviews);
+        if (
+          savedPreviews.some((entry) => entry.id === saved.selectedPreviewId)
+        ) {
+          setSelectedPreviewId(saved.selectedPreviewId);
+        }
+      }
+      const stepNeedsPreviews =
+        saved.activeStep === "refine" || saved.activeStep === "order";
+      if (
+        saved.activeStep &&
+        ["photo", "style", "refine", "order"].includes(saved.activeStep) &&
+        (!stepNeedsPreviews || savedPreviews.length > 0)
+      ) {
+        setActiveStep(saved.activeStep);
+      }
+    }
+    setHydrated(true);
+  }, []);
+
+  // Persist the working state so a reload doesn't lose progress.
+  useEffect(() => {
+    if (!hydrated) return;
+    const state: PersistedState = {
+      petName,
+      petType,
+      stylePreset,
+      background,
+      framing,
+      artistNotes,
+      sourcePhotoUrl,
+      sessionId,
+      previews,
+      selectedPreviewId,
+      activeStep,
+    };
+    try {
+      window.localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    } catch {
+      // Storage full or unavailable — the editor still works, just without persistence.
+    }
+  }, [
+    hydrated,
+    petName,
+    petType,
+    stylePreset,
+    background,
+    framing,
+    artistNotes,
+    sourcePhotoUrl,
+    sessionId,
+    previews,
+    selectedPreviewId,
+    activeStep,
+  ]);
+
+  function startOver() {
+    if (!window.confirm(t("startOverConfirm"))) return;
+    try {
+      window.localStorage.removeItem(STORAGE_KEY);
+    } catch {
+      // Ignore storage errors; state below is reset regardless.
+    }
+    setPetName("");
+    setPetType(PET_TYPES[0]);
+    setStylePreset("classic-oil");
+    setBackground(BACKGROUND_OPTIONS[1]);
+    setFraming(FRAMING_OPTIONS[0]);
+    setArtistNotes("");
+    setSourcePhotoUrl("");
+    setUploadError(null);
+    setSessionId(undefined);
+    setPreviews([]);
+    setSelectedPreviewId(undefined);
+    setRevisionMessage("");
+    setGenerationError(null);
+    setRemainingQuota(null);
+    setActiveStep("photo");
   }
 
   // Rotate the atelier status lines while a preview is being painted.
@@ -632,6 +785,19 @@ export function PortraitPreviewStudio({ product }: { product: Product }) {
         <p className="mx-auto mt-5 max-w-md text-center text-xs italic leading-relaxed text-ink-faint dark:text-canvas/40">
           {t("disclaimer")}
         </p>
+
+        {sourcePhotoUrl || trimmedName || previews.length > 0 ? (
+          <div className="mt-4 flex justify-center">
+            <button
+              type="button"
+              onClick={startOver}
+              className="inline-flex items-center gap-1.5 text-xs font-medium uppercase tracking-[0.16em] text-ink-muted transition hover:text-rose dark:text-canvas/50 dark:hover:text-rose"
+            >
+              <ArrowPathIcon className="h-3.5 w-3.5" />
+              {t("startOver")}
+            </button>
+          </div>
+        ) : null}
       </div>
 
       {/* ——— The steps ——— */}

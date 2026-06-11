@@ -82,15 +82,16 @@ export async function HomeHero() {
               <OrnateFrame variant="gilt" className="relative z-10">
                 <div className="relative aspect-[4/5]">
                   <BeforeAfterSlider
-                    beforeSrc={showcaseImages.heroSlider}
-                    afterSrc={showcaseImages.heroSlider}
+                    beforeSrc={showcaseImages.heroPhoto}
+                    afterSrc={showcaseImages.heroPainting}
                     alt={t("altPrimary")}
                     beforeLabel={t("slider.before")}
                     afterLabel={t("slider.after")}
                     ariaLabel={t("slider.aria")}
                     sizes="(max-width: 1024px) 90vw, 460px"
                     priority
-                    stylize
+                    beforeImageClassName="object-[54%_46%]"
+                    afterImageClassName="object-[50%_40%]"
                   />
                 </div>
               </OrnateFrame>

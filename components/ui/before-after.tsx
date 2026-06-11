@@ -21,6 +21,8 @@ export function BeforeAfterSlider({
   sizes,
   priority = false,
   stylize = false,
+  beforeImageClassName,
+  afterImageClassName,
 }: {
   beforeSrc: string;
   afterSrc: string;
@@ -32,6 +34,9 @@ export function BeforeAfterSlider({
   priority?: boolean;
   /** Apply painterly filters and canvas texture — for showing one photo as photo vs. simulated painting. */
   stylize?: boolean;
+  /** Extra classes for crop/alignment (e.g. object-position). */
+  beforeImageClassName?: string;
+  afterImageClassName?: string;
 }) {
   const [position, setPosition] = useState(58);
   const [hasInteracted, setHasInteracted] = useState(false);
@@ -96,7 +101,11 @@ export function BeforeAfterSlider({
           alt={alt}
           fill
           priority={priority}
-          className={clsx("object-cover", stylize && "painting-look")}
+          className={clsx(
+            "object-cover",
+            stylize && "painting-look",
+            afterImageClassName,
+          )}
           sizes={sizes}
           draggable={false}
         />
@@ -122,7 +131,11 @@ export function BeforeAfterSlider({
           aria-hidden="true"
           fill
           priority={priority}
-          className={clsx("object-cover", stylize && "photo-look")}
+          className={clsx(
+            "object-cover",
+            stylize && "photo-look",
+            beforeImageClassName,
+          )}
           sizes={sizes}
           draggable={false}
         />
