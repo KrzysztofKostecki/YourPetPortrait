@@ -85,14 +85,14 @@ export const mockPortraitProduct: Product = {
   },
   variants: mockVariants,
   featuredImage: {
-    url: showcaseImages.heroSlider,
+    url: showcaseImages.heroPainting,
     altText: "Custom pet oil portrait sample",
     width: 1200,
     height: 1500,
   },
   images: [
     {
-      url: showcaseImages.heroSlider,
+      url: showcaseImages.heroPainting,
       altText: "Custom pet oil portrait sample",
       width: 1200,
       height: 1500,
