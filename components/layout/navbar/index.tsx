@@ -10,7 +10,6 @@ import { Link } from "i18n/navigation";
 import { getTranslations } from "next-intl/server";
 import { Suspense } from "react";
 import MobileMenu from "./mobile-menu";
-import Search, { SearchSkeleton } from "./search";
 
 export async function Navbar() {
   const t = await getTranslations("Nav");
@@ -62,12 +61,6 @@ export async function Navbar() {
               </li>
             ))}
           </ul>
-        </div>
-
-        <div className="hidden flex-1 justify-center px-6 lg:flex">
-          <Suspense fallback={<SearchSkeleton />}>
-            <Search />
-          </Suspense>
         </div>
 
         <div className="flex items-center gap-3 sm:gap-4">

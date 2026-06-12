@@ -38,7 +38,7 @@
         "aria": "Compare the original photo with the painted portrait"
       },
       "plaque": {
-        "title": "“Bailey”",
+        "title": "“Bruno”",
         "subtitle": "Oil on canvas · 18 × 24 in"
       },
       "altPrimary": "Border collie portrait, photo and painted versions",
@@ -220,7 +220,6 @@
       "uploading": "Stretching the canvas…",
       "readyHint": "Beautiful. Now choose a style on the right and let the studio paint.",
       "plaqueFallback": "Your masterpiece",
-      "plaqueMedium": "Oil on canvas",
       "originalThumb": "Photo",
       "signedOutTitle": "The easel is waiting",
       "signedOutHint": "Sign in to place their photo and watch the portrait appear."
@@ -259,16 +258,49 @@
     "revisionPlaceholder": "Describe a revision, e.g. softer fur texture",
     "revise": "Repaint with this change",
     "thumbnailAlt": "Preview version",
+    "editor": {
+      "title": "View image",
+      "cropTitle": "Crop & rotate",
+      "cropRotate": "Crop & rotate",
+      "openFullSize": "Open full size",
+      "rotateLeft": "Rotate left",
+      "rotateRight": "Rotate right",
+      "zoom": "Zoom",
+      "cancel": "Cancel",
+      "save": "Save changes",
+      "saving": "Saving…",
+      "saveError": "Couldn't save the edited image. Please try again.",
+      "close": "Close"
+    },
+    "deleteVersion": "Delete this version",
+    "deleteVersionConfirm": "Delete this version? This cannot be undone.",
     "addToCart": "Add portrait to cart",
     "petTypes": {
       "Dog": "Dog",
       "Cat": "Cat"
     },
     "styles": {
-      "classic-oil": "Classic oil",
-      "modern-realistic": "Modern realistic",
-      "warm-vintage": "Warm vintage",
-      "light-impressionist": "Light impressionist"
+      "oil-painting": "Oil painting",
+      "watercolor": "Watercolor",
+      "pencil-sketch": "Pencil sketch",
+      "charcoal": "Charcoal"
+    },
+    "media": {
+      "oil-painting": "Oil on canvas",
+      "watercolor": "Watercolor on paper",
+      "pencil-sketch": "Graphite on paper",
+      "charcoal": "Charcoal on paper"
+    },
+    "fidelityLabel": "Photo fidelity",
+    "fidelity": {
+      "faithful": {
+        "label": "True to photo",
+        "description": "Strictly follows your photo — pose, markings, colors."
+      },
+      "creative": {
+        "label": "Artistic freedom",
+        "description": "The artist may adjust pose, lighting, and composition."
+      }
     },
     "backgrounds": {
       "Neutral gray": "Neutral gray",

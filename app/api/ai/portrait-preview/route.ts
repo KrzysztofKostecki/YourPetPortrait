@@ -1,10 +1,13 @@
 import { createVertex } from "@ai-sdk/google-vertex";
-import { put } from "@vercel/blob";
+import { del, put } from "@vercel/blob";
 import { auth } from "auth";
 import { generateText } from "ai";
 import { randomUUID } from "crypto";
 import {
   ALLOWED_UPLOAD_MIME_TYPES,
+  DEFAULT_FIDELITY,
+  FIDELITY_OPTIONS,
+  type FidelityId,
   type StylePresetId,
 } from "lib/portrait/constants";
 import { buildPortraitPrompt } from "lib/portrait/prompt";
@@ -13,6 +16,8 @@ import {
   appendPreview,
   createOrUpdateSession,
   getPortraitSession,
+  removePreview,
+  updatePreviewUrl,
 } from "lib/portrait/session";
 import { NextResponse } from "next/server";
 
@@ -25,8 +30,27 @@ type PortraitPreviewRequest = {
   stylePreset: StylePresetId;
   background: string;
   framing: string;
+  fidelity?: FidelityId;
+  artistNotes?: string;
   revisionMessage?: string;
 };
+
+type PortraitPreviewDeleteRequest = {
+  sessionId: string;
+  previewId: string;
+};
+
+type PortraitPreviewUpdateRequest = {
+  sessionId: string;
+  previewId: string;
+  url: string;
+};
+
+function normalizeFidelity(value: unknown): FidelityId {
+  return FIDELITY_OPTIONS.some((option) => option.id === value)
+    ? (value as FidelityId)
+    : DEFAULT_FIDELITY;
+}
 
 function getModelName(): string {
   return process.env.GEMINI_IMAGE_MODEL ?? "gemini-2.5-flash-image";
@@ -88,8 +112,10 @@ export async function POST(request: Request): Promise<NextResponse> {
     stylePreset,
     background,
     framing,
+    artistNotes,
     revisionMessage,
   } = body;
+  const fidelity = normalizeFidelity(body.fidelity);
 
   if (
     !sourcePhotoUrl ||
@@ -136,6 +162,8 @@ export async function POST(request: Request): Promise<NextResponse> {
       stylePreset,
       background,
       framing,
+      fidelity,
+      artistNotes,
       revisionMessage,
     });
 
@@ -183,6 +211,8 @@ export async function POST(request: Request): Promise<NextResponse> {
       stylePreset,
       background,
       framing,
+      fidelity,
+      artistNotes,
     });
 
     await appendPreview(portraitSession.id, {
@@ -212,4 +242,119 @@ export async function POST(request: Request): Promise<NextResponse> {
       { status: 500 },
     );
   }
+}
+
+export async function DELETE(request: Request): Promise<NextResponse> {
+  const session = await auth();
+  const email = session?.user?.email;
+
+  if (!email) {
+    return NextResponse.json(
+      { error: "Sign in to manage previews." },
+      { status: 401 },
+    );
+  }
+
+  let body: PortraitPreviewDeleteRequest;
+  try {
+    body = (await request.json()) as PortraitPreviewDeleteRequest;
+  } catch {
+    return NextResponse.json(
+      { error: "Invalid request body" },
+      { status: 400 },
+    );
+  }
+
+  const { sessionId, previewId } = body;
+  if (!sessionId || !previewId) {
+    return NextResponse.json(
+      { error: "Missing required fields" },
+      { status: 400 },
+    );
+  }
+
+  const existing = await getPortraitSession(sessionId);
+  if (!existing || existing.userEmail !== email) {
+    return NextResponse.json(
+      { error: "Invalid preview session" },
+      { status: 403 },
+    );
+  }
+
+  const result = await removePreview(sessionId, previewId);
+  if (!result) {
+    return NextResponse.json({ error: "Preview not found" }, { status: 404 });
+  }
+
+  try {
+    await del(result.removed.url);
+  } catch {
+    // The session no longer references the preview; an orphaned blob is acceptable.
+  }
+
+  return NextResponse.json({
+    deletedPreviewId: previewId,
+    selectedPreviewId: result.session.selectedPreviewId ?? null,
+  });
+}
+
+export async function PATCH(request: Request): Promise<NextResponse> {
+  const session = await auth();
+  const email = session?.user?.email;
+
+  if (!email) {
+    return NextResponse.json(
+      { error: "Sign in to manage previews." },
+      { status: 401 },
+    );
+  }
+
+  let body: PortraitPreviewUpdateRequest;
+  try {
+    body = (await request.json()) as PortraitPreviewUpdateRequest;
+  } catch {
+    return NextResponse.json(
+      { error: "Invalid request body" },
+      { status: 400 },
+    );
+  }
+
+  const { sessionId, previewId, url } = body;
+  if (!sessionId || !previewId || !url) {
+    return NextResponse.json(
+      { error: "Missing required fields" },
+      { status: 400 },
+    );
+  }
+
+  try {
+    if (new URL(url).protocol !== "https:") {
+      throw new Error("Insecure URL");
+    }
+  } catch {
+    return NextResponse.json({ error: "Invalid preview URL" }, { status: 400 });
+  }
+
+  const existing = await getPortraitSession(sessionId);
+  if (!existing || existing.userEmail !== email) {
+    return NextResponse.json(
+      { error: "Invalid preview session" },
+      { status: 403 },
+    );
+  }
+
+  const result = await updatePreviewUrl(sessionId, previewId, url);
+  if (!result) {
+    return NextResponse.json({ error: "Preview not found" }, { status: 404 });
+  }
+
+  if (result.previousUrl !== url) {
+    try {
+      await del(result.previousUrl);
+    } catch {
+      // The session already points at the new image; an orphaned blob is acceptable.
+    }
+  }
+
+  return NextResponse.json({ previewId, url });
 }

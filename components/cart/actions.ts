@@ -9,7 +9,7 @@ import {
   updateCart,
 } from "lib/shopify";
 import { buildPortraitCartAttributes } from "lib/portrait/cart";
-import type { StylePresetId } from "lib/portrait/constants";
+import type { FidelityId, StylePresetId } from "lib/portrait/constants";
 import { updateTag } from "next/cache";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
@@ -42,6 +42,7 @@ export async function addPortraitItem(
     selectedPreviewUrl: string;
     previewSessionId: string;
     stylePreset: string;
+    fidelity: string;
   },
 ) {
   if (!payload.merchandiseId) {
@@ -66,6 +67,7 @@ export async function addPortraitItem(
           selectedPreviewUrl: payload.selectedPreviewUrl,
           previewSessionId: payload.previewSessionId,
           stylePreset: payload.stylePreset as StylePresetId,
+          fidelity: payload.fidelity as FidelityId,
         }),
       },
     ]);

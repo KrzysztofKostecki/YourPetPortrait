@@ -20,13 +20,13 @@ describe("buildPortraitPrompt gemini payload", () => {
     const prompt = buildPortraitPrompt({
       petName: "Milo",
       petType: "Cat",
-      stylePreset: "warm-vintage",
+      stylePreset: "charcoal",
       background: "Cream",
       framing: "Chest up",
     });
 
     expect(prompt).toContain("Milo");
     expect(prompt).toContain("cat");
-    expect(prompt).toContain("Prompt version: v1");
+    expect(prompt).toContain("Prompt version: v2");
   });
 });

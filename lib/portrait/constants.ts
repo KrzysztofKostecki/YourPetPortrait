@@ -1,29 +1,48 @@
-export const PORTRAIT_PROMPT_VERSION = "v1";
+export const PORTRAIT_PROMPT_VERSION = "v2";
 
 export const STYLE_PRESETS = [
   {
-    id: "classic-oil",
-    label: "Classic oil",
-    description: "Traditional hand-painted oil portrait with soft brushwork.",
+    id: "oil-painting",
+    label: "Oil painting",
+    description: "Classic hand-painted oil portrait with soft brushwork.",
   },
   {
-    id: "modern-realistic",
-    label: "Modern realistic",
-    description: "Detailed, lifelike oil rendering with crisp features.",
+    id: "watercolor",
+    label: "Watercolor",
+    description: "Delicate translucent washes with soft blended edges.",
   },
   {
-    id: "warm-vintage",
-    label: "Warm vintage",
-    description: "Soft amber tones and gentle painterly texture.",
+    id: "pencil-sketch",
+    label: "Pencil sketch",
+    description: "Fine graphite linework with subtle shading.",
   },
   {
-    id: "light-impressionist",
-    label: "Light impressionist",
-    description: "Looser strokes with luminous highlights.",
+    id: "charcoal",
+    label: "Charcoal",
+    description: "Bold expressive strokes with rich dark tones.",
   },
 ] as const;
 
 export type StylePresetId = (typeof STYLE_PRESETS)[number]["id"];
+
+export const DEFAULT_STYLE_PRESET: StylePresetId = "oil-painting";
+
+export const FIDELITY_OPTIONS = [
+  {
+    id: "faithful",
+    label: "True to photo",
+    description: "Strictly follows your photo — pose, markings, colors.",
+  },
+  {
+    id: "creative",
+    label: "Artistic freedom",
+    description: "The artist may adjust pose, lighting, and composition.",
+  },
+] as const;
+
+export type FidelityId = (typeof FIDELITY_OPTIONS)[number]["id"];
+
+export const DEFAULT_FIDELITY: FidelityId = "faithful";
 
 export const BACKGROUND_OPTIONS = [
   "Neutral gray",

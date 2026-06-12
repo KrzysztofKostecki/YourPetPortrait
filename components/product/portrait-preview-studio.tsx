@@ -3,27 +3,37 @@
 import {
   ArrowPathIcon,
   ArrowUpTrayIcon,
+  ArrowsPointingOutIcon,
   CheckIcon,
   ChevronDownIcon,
+  ScissorsIcon,
   SparklesIcon,
+  XMarkIcon,
 } from "@heroicons/react/24/outline";
 import { upload } from "@vercel/blob/client";
 import { addPortraitItem } from "components/cart/actions";
 import { SignInPrompt } from "components/auth/auth-button";
 import Price from "components/price";
 import { BeforeAfterSlider } from "components/ui/before-after";
+import {
+  ImageEditorModal,
+  type ImageEditorMode,
+} from "components/ui/image-editor-modal";
 import { OrnateFrame } from "components/ui/ornate-frame";
 import { VariantSelector } from "components/product/variant-selector";
 import clsx from "clsx";
 import {
   BACKGROUND_OPTIONS,
+  DEFAULT_FIDELITY,
+  DEFAULT_STYLE_PRESET,
+  FIDELITY_OPTIONS,
   FRAMING_OPTIONS,
   PET_TYPES,
   REVISION_CHIPS,
   STYLE_PRESETS,
+  type FidelityId,
   type StylePresetId,
 } from "lib/portrait/constants";
-import { showcaseImages } from "lib/images";
 import { Product, ProductVariant } from "lib/shopify/types";
 import Image from "next/image";
 import { useSession } from "next-auth/react";
@@ -47,6 +57,8 @@ type PreviewEntry = {
 
 type StepId = "photo" | "style" | "refine" | "order";
 
+type EditorTarget = { kind: "source" } | { kind: "preview"; id: string };
+
 const STORAGE_KEY = "portrait-studio:v1";
 
 type PersistedState = {
@@ -55,6 +67,7 @@ type PersistedState = {
   stylePreset: StylePresetId;
   background: string;
   framing: string;
+  fidelity: FidelityId;
   artistNotes: string;
   sourcePhotoUrl: string;
   sessionId?: string;
@@ -75,10 +88,10 @@ function readPersistedState(): Partial<PersistedState> | null {
 }
 
 const STYLE_THUMBS: Record<StylePresetId, string> = {
-  "warm-vintage": showcaseImages.gallery[0]!.src,
-  "classic-oil": showcaseImages.gallery[1]!.src,
-  "modern-realistic": showcaseImages.gallery[2]!.src,
-  "light-impressionist": showcaseImages.gallery[3]!.src,
+  "oil-painting": "/images/styles/oil-painting.png",
+  watercolor: "/images/styles/watercolor.png",
+  "pencil-sketch": "/images/styles/pencil-sketch.png",
+  charcoal: "/images/styles/charcoal.png",
 };
 
 const BACKGROUND_SWATCHES: Record<string, string> = {
@@ -186,9 +199,11 @@ export function PortraitPreviewStudio({ product }: { product: Product }) {
 
   const [petName, setPetName] = useState("");
   const [petType, setPetType] = useState<string>(PET_TYPES[0]);
-  const [stylePreset, setStylePreset] = useState<StylePresetId>("classic-oil");
+  const [stylePreset, setStylePreset] =
+    useState<StylePresetId>(DEFAULT_STYLE_PRESET);
   const [background, setBackground] = useState<string>(BACKGROUND_OPTIONS[1]);
   const [framing, setFraming] = useState<string>(FRAMING_OPTIONS[0]);
+  const [fidelity, setFidelity] = useState<FidelityId>(DEFAULT_FIDELITY);
   const [artistNotes, setArtistNotes] = useState("");
   const [sourcePhotoUrl, setSourcePhotoUrl] = useState("");
   const [uploadError, setUploadError] = useState<string | null>(null);
@@ -202,6 +217,8 @@ export function PortraitPreviewStudio({ product }: { product: Product }) {
   const [generationError, setGenerationError] = useState<string | null>(null);
   const [remainingQuota, setRemainingQuota] = useState<number | null>(null);
   const [activeStep, setActiveStep] = useState<StepId>("photo");
+  const [editorTarget, setEditorTarget] = useState<EditorTarget | null>(null);
+  const [editorMode, setEditorMode] = useState<ImageEditorMode>("view");
   const [statusIndex, setStatusIndex] = useState(0);
   const [hydrated, setHydrated] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -252,6 +269,12 @@ export function PortraitPreviewStudio({ product }: { product: Product }) {
       ) {
         setFraming(saved.framing);
       }
+      if (
+        saved.fidelity &&
+        FIDELITY_OPTIONS.some((option) => option.id === saved.fidelity)
+      ) {
+        setFidelity(saved.fidelity);
+      }
       if (typeof saved.artistNotes === "string") {
         setArtistNotes(saved.artistNotes);
       }
@@ -297,6 +320,7 @@ export function PortraitPreviewStudio({ product }: { product: Product }) {
       stylePreset,
       background,
       framing,
+      fidelity,
       artistNotes,
       sourcePhotoUrl,
       sessionId,
@@ -316,6 +340,7 @@ export function PortraitPreviewStudio({ product }: { product: Product }) {
     stylePreset,
     background,
     framing,
+    fidelity,
     artistNotes,
     sourcePhotoUrl,
     sessionId,
@@ -333,9 +358,10 @@ export function PortraitPreviewStudio({ product }: { product: Product }) {
     }
     setPetName("");
     setPetType(PET_TYPES[0]);
-    setStylePreset("classic-oil");
+    setStylePreset(DEFAULT_STYLE_PRESET);
     setBackground(BACKGROUND_OPTIONS[1]);
     setFraming(FRAMING_OPTIONS[0]);
+    setFidelity(DEFAULT_FIDELITY);
     setArtistNotes("");
     setSourcePhotoUrl("");
     setUploadError(null);
@@ -402,6 +428,7 @@ export function PortraitPreviewStudio({ product }: { product: Product }) {
       selectedPreviewUrl: selectedPreview?.url ?? "",
       previewSessionId: sessionId ?? "",
       stylePreset,
+      fidelity,
     }),
     [
       selectedVariantId,
@@ -413,6 +440,7 @@ export function PortraitPreviewStudio({ product }: { product: Product }) {
       selectedPreview?.url,
       sessionId,
       stylePreset,
+      fidelity,
     ],
   );
 
@@ -454,6 +482,8 @@ export function PortraitPreviewStudio({ product }: { product: Product }) {
           stylePreset,
           background,
           framing,
+          fidelity,
+          artistNotes,
           revisionMessage: revision ?? revisionMessage,
         }),
       });
@@ -485,6 +515,72 @@ export function PortraitPreviewStudio({ product }: { product: Product }) {
     }
   }
 
+  function openEditor(target: EditorTarget, mode: ImageEditorMode) {
+    setEditorTarget(target);
+    setEditorMode(mode);
+  }
+
+  const editorSrc =
+    editorTarget?.kind === "source"
+      ? sourcePhotoUrl
+      : editorTarget
+        ? previews.find((entry) => entry.id === editorTarget.id)?.url
+        : undefined;
+
+  async function saveEditedImage(image: Blob) {
+    if (!editorTarget) return;
+
+    const blob = await upload(`portrait-edited-${Date.now()}.jpg`, image, {
+      access: "public",
+      handleUploadUrl: "/api/upload",
+      contentType: "image/jpeg",
+    });
+
+    if (editorTarget.kind === "source") {
+      setSourcePhotoUrl(blob.url);
+    } else {
+      const previewId = editorTarget.id;
+      setPreviews((current) =>
+        current.map((entry) =>
+          entry.id === previewId ? { ...entry, url: blob.url } : entry,
+        ),
+      );
+      if (sessionId) {
+        // Keep the server-side session pointing at the edited image.
+        void fetch("/api/ai/portrait-preview", {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ sessionId, previewId, url: blob.url }),
+        }).catch(() => {});
+      }
+    }
+    setEditorTarget(null);
+  }
+
+  function deletePreview(previewId: string) {
+    if (!window.confirm(t("deleteVersionConfirm"))) return;
+
+    const remaining = previews.filter((entry) => entry.id !== previewId);
+    setPreviews(remaining);
+    if (selectedPreviewId === previewId) {
+      setSelectedPreviewId(remaining.at(-1)?.id);
+    }
+    if (
+      remaining.length === 0 &&
+      (activeStep === "refine" || activeStep === "order")
+    ) {
+      setActiveStep("style");
+    }
+    if (sessionId) {
+      // Keep the server-side session in sync; the UI is already updated.
+      void fetch("/api/ai/portrait-preview", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ sessionId, previewId }),
+      }).catch(() => {});
+    }
+  }
+
   function onDrop(event: React.DragEvent) {
     event.preventDefault();
     setIsDragging(false);
@@ -495,7 +591,7 @@ export function PortraitPreviewStudio({ product }: { product: Product }) {
   const plaqueTitle = trimmedName
     ? `“${trimmedName}”`
     : t("stage.plaqueFallback");
-  const plaqueSubtitle = `${t(`styles.${stylePreset}`)} · ${t("stage.plaqueMedium")}`;
+  const plaqueSubtitle = t(`media.${stylePreset}`);
 
   if (!session?.user) {
     return (
@@ -666,6 +762,36 @@ export function PortraitPreviewStudio({ product }: { product: Product }) {
                   />
                   {/* One-shot varnish shine when a fresh preview lands */}
                   <div key={selectedPreview.id} className="varnish-sweep" />
+                  <div className="absolute right-3 top-3 z-20 flex items-center gap-2">
+                    <button
+                      type="button"
+                      onClick={() =>
+                        openEditor(
+                          { kind: "preview", id: selectedPreview.id },
+                          "view",
+                        )
+                      }
+                      aria-label={t("editor.title")}
+                      title={t("editor.title")}
+                      className="flex h-8 w-8 items-center justify-center rounded-full bg-ink/55 text-white/90 backdrop-blur-sm transition hover:bg-ink/75"
+                    >
+                      <ArrowsPointingOutIcon className="h-4 w-4" />
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() =>
+                        openEditor(
+                          { kind: "preview", id: selectedPreview.id },
+                          "edit",
+                        )
+                      }
+                      aria-label={t("editor.cropRotate")}
+                      title={t("editor.cropRotate")}
+                      className="flex h-8 w-8 items-center justify-center rounded-full bg-ink/55 text-white/90 backdrop-blur-sm transition hover:bg-ink/75"
+                    >
+                      <ScissorsIcon className="h-4 w-4" />
+                    </button>
+                  </div>
                 </>
               ) : (
                 <>
@@ -681,14 +807,34 @@ export function PortraitPreviewStudio({ product }: { product: Product }) {
                       {t("stage.readyHint")}
                     </p>
                   </div>
-                  <button
-                    type="button"
-                    onClick={() => fileInputRef.current?.click()}
-                    className="absolute right-3 top-3 inline-flex items-center gap-1.5 rounded-full bg-ink/55 px-3 py-1.5 text-[0.65rem] font-medium uppercase tracking-[0.16em] text-white/90 backdrop-blur-sm transition hover:bg-ink/75"
-                  >
-                    <ArrowPathIcon className="h-3.5 w-3.5" />
-                    {t("replacePhoto")}
-                  </button>
+                  <div className="absolute right-3 top-3 flex items-center gap-2">
+                    <button
+                      type="button"
+                      onClick={() => openEditor({ kind: "source" }, "view")}
+                      aria-label={t("editor.title")}
+                      title={t("editor.title")}
+                      className="flex h-8 w-8 items-center justify-center rounded-full bg-ink/55 text-white/90 backdrop-blur-sm transition hover:bg-ink/75"
+                    >
+                      <ArrowsPointingOutIcon className="h-4 w-4" />
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => openEditor({ kind: "source" }, "edit")}
+                      aria-label={t("editor.cropRotate")}
+                      title={t("editor.cropRotate")}
+                      className="flex h-8 w-8 items-center justify-center rounded-full bg-ink/55 text-white/90 backdrop-blur-sm transition hover:bg-ink/75"
+                    >
+                      <ScissorsIcon className="h-4 w-4" />
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => fileInputRef.current?.click()}
+                      className="inline-flex items-center gap-1.5 rounded-full bg-ink/55 px-3 py-1.5 text-[0.65rem] font-medium uppercase tracking-[0.16em] text-white/90 backdrop-blur-sm transition hover:bg-ink/75"
+                    >
+                      <ArrowPathIcon className="h-3.5 w-3.5" />
+                      {t("replacePhoto")}
+                    </button>
+                  </div>
                 </>
               )}
 
@@ -759,25 +905,36 @@ export function PortraitPreviewStudio({ product }: { product: Product }) {
               </span>
             </button>
             {previews.map((preview, index) => (
-              <button
-                key={preview.id}
-                type="button"
-                onClick={() => setSelectedPreviewId(preview.id)}
-                className={clsx(
-                  "relative h-16 w-16 shrink-0 overflow-hidden rounded-lg border transition",
-                  selectedPreviewId === preview.id
-                    ? "border-accent ring-2 ring-accent dark:border-gold dark:ring-gold"
-                    : "border-line opacity-70 hover:opacity-100 dark:border-white/10",
-                )}
-              >
-                <Image
-                  src={preview.url}
-                  alt={`${t("thumbnailAlt")} ${index + 1}`}
-                  fill
-                  className="object-cover"
-                  sizes="64px"
-                />
-              </button>
+              <div key={preview.id} className="group/thumb relative shrink-0">
+                <button
+                  type="button"
+                  onClick={() => setSelectedPreviewId(preview.id)}
+                  className={clsx(
+                    "relative block h-16 w-16 overflow-hidden rounded-lg border transition",
+                    selectedPreviewId === preview.id
+                      ? "border-accent ring-2 ring-accent dark:border-gold dark:ring-gold"
+                      : "border-line opacity-70 hover:opacity-100 dark:border-white/10",
+                  )}
+                >
+                  <Image
+                    src={preview.url}
+                    alt={`${t("thumbnailAlt")} ${index + 1}`}
+                    fill
+                    className="object-cover"
+                    sizes="64px"
+                  />
+                </button>
+                <button
+                  type="button"
+                  disabled={generating}
+                  onClick={() => deletePreview(preview.id)}
+                  aria-label={`${t("deleteVersion")} ${index + 1}`}
+                  title={t("deleteVersion")}
+                  className="absolute -right-1.5 -top-1.5 z-10 flex h-5 w-5 items-center justify-center rounded-full bg-ink/70 text-white opacity-100 transition hover:bg-rose disabled:opacity-40 lg:opacity-0 lg:group-hover/thumb:opacity-100"
+                >
+                  <XMarkIcon className="h-3 w-3" strokeWidth={2.5} />
+                </button>
+              </div>
             ))}
           </div>
         ) : null}
@@ -968,6 +1125,40 @@ export function PortraitPreviewStudio({ product }: { product: Product }) {
                     )}
                   >
                     {t(`framingOptions.${option}`)}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div>
+              <span className="studio-label">{t("fidelityLabel")}</span>
+              <div className="grid grid-cols-2 gap-2">
+                {FIDELITY_OPTIONS.map((option) => (
+                  <button
+                    key={option.id}
+                    type="button"
+                    onClick={() => setFidelity(option.id)}
+                    aria-pressed={fidelity === option.id}
+                    className={clsx(
+                      "rounded-xl border px-3 py-2.5 text-left transition",
+                      fidelity === option.id
+                        ? "border-accent bg-accent/10 dark:border-gold dark:bg-gold/10"
+                        : "border-line hover:border-accent/50 dark:border-white/10",
+                    )}
+                  >
+                    <span
+                      className={clsx(
+                        "block text-xs font-medium",
+                        fidelity === option.id
+                          ? "text-accent dark:text-gold"
+                          : "text-ink dark:text-canvas",
+                      )}
+                    >
+                      {t(`fidelity.${option.id}.label`)}
+                    </span>
+                    <span className="mt-0.5 block text-[0.65rem] leading-snug text-ink-muted dark:text-canvas/50">
+                      {t(`fidelity.${option.id}.description`)}
+                    </span>
                   </button>
                 ))}
               </div>
@@ -1209,6 +1400,19 @@ export function PortraitPreviewStudio({ product }: { product: Product }) {
           )}
         </div>
       </div>
+
+      {/* ——— Image viewer & crop/rotate editor ——— */}
+      {editorTarget && editorSrc ? (
+        <ImageEditorModal
+          src={editorSrc}
+          alt={
+            editorTarget.kind === "source" ? t("uploadedAlt") : t("previewAlt")
+          }
+          initialMode={editorMode}
+          onClose={() => setEditorTarget(null)}
+          onSave={saveEditedImage}
+        />
+      ) : null}
     </div>
   );
 }

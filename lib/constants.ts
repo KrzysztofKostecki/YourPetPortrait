@@ -61,6 +61,7 @@ export const PORTRAIT_CART_ATTRIBUTES = [
   "selectedPreviewUrl",
   "previewSessionId",
   "stylePreset",
+  "fidelity",
   "promptVersion",
 ] as const;
 

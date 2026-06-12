@@ -14,7 +14,8 @@ describe("buildPortraitCartAttributes", () => {
       sourcePhotoUrl: "https://blob.example/source.jpg",
       selectedPreviewUrl: "https://blob.example/preview.png",
       previewSessionId: "session-123",
-      stylePreset: "classic-oil",
+      stylePreset: "oil-painting",
+      fidelity: "faithful",
     });
 
     expect(attributes).toEqual(
@@ -29,11 +30,12 @@ describe("buildPortraitCartAttributes", () => {
           value: "https://blob.example/preview.png",
         },
         { key: "previewSessionId", value: "session-123" },
-        { key: "stylePreset", value: "classic-oil" },
-        { key: "promptVersion", value: "v1" },
+        { key: "stylePreset", value: "oil-painting" },
+        { key: "fidelity", value: "faithful" },
+        { key: "promptVersion", value: "v2" },
       ]),
     );
-    expect(attributes).toHaveLength(9);
+    expect(attributes).toHaveLength(10);
   });
 });
 
@@ -48,12 +50,13 @@ describe("buildPortraitCartLine", () => {
       sourcePhotoUrl: "https://blob.example/cat.jpg",
       selectedPreviewUrl: "https://blob.example/cat-preview.png",
       previewSessionId: "session-456",
-      stylePreset: "modern-realistic",
+      stylePreset: "watercolor",
+      fidelity: "creative",
     });
 
     expect(line.merchandiseId).toBe("gid://shopify/ProductVariant/1");
     expect(line.quantity).toBe(1);
-    expect(line.attributes).toHaveLength(9);
+    expect(line.attributes).toHaveLength(10);
   });
 });
 
@@ -79,6 +82,42 @@ describe("POST /api/ai/portrait-preview", () => {
     await expect(response.json()).resolves.toMatchObject({
       error: "Sign in to create a preview.",
     });
+  });
+
+  it("rejects unauthenticated preview deletion", async () => {
+    vi.doMock("auth", () => ({
+      auth: vi.fn().mockResolvedValue(null),
+    }));
+
+    const { DELETE } = await import("app/api/ai/portrait-preview/route");
+    const response = await DELETE(
+      new Request("http://localhost/api/ai/portrait-preview", {
+        method: "DELETE",
+        body: JSON.stringify({ sessionId: "s", previewId: "p" }),
+      }),
+    );
+
+    expect(response.status).toBe(401);
+  });
+
+  it("rejects unauthenticated preview updates", async () => {
+    vi.doMock("auth", () => ({
+      auth: vi.fn().mockResolvedValue(null),
+    }));
+
+    const { PATCH } = await import("app/api/ai/portrait-preview/route");
+    const response = await PATCH(
+      new Request("http://localhost/api/ai/portrait-preview", {
+        method: "PATCH",
+        body: JSON.stringify({
+          sessionId: "s",
+          previewId: "p",
+          url: "https://blob.example/edited.jpg",
+        }),
+      }),
+    );
+
+    expect(response.status).toBe(401);
   });
 });
 
@@ -114,7 +153,7 @@ describe("buildPortraitPrompt", () => {
     const prompt = buildPortraitPrompt({
       petName: "Bailey",
       petType: "Dog",
-      stylePreset: "classic-oil",
+      stylePreset: "oil-painting",
       background: "Cream",
       framing: "Head and shoulders",
       revisionMessage: "warmer colors",
@@ -122,5 +161,46 @@ describe("buildPortraitPrompt", () => {
 
     expect(prompt).toContain("warmer colors");
     expect(prompt).toContain("Bailey");
+  });
+
+  it("includes the customer's artist notes", async () => {
+    const { buildPortraitPrompt } = await import("lib/portrait/prompt");
+    const prompt = buildPortraitPrompt({
+      petName: "Bailey",
+      petType: "Dog",
+      stylePreset: "pencil-sketch",
+      background: "Cream",
+      framing: "Head and shoulders",
+      artistNotes: "Keep the red collar visible",
+    });
+
+    expect(prompt).toContain("Keep the red collar visible");
+  });
+
+  it("adds strict fidelity instructions by default", async () => {
+    const { buildPortraitPrompt } = await import("lib/portrait/prompt");
+    const prompt = buildPortraitPrompt({
+      petName: "Bailey",
+      petType: "Dog",
+      stylePreset: "oil-painting",
+      background: "Cream",
+      framing: "Head and shoulders",
+    });
+
+    expect(prompt).toContain("Follow the reference photo strictly");
+  });
+
+  it("allows artistic freedom when requested", async () => {
+    const { buildPortraitPrompt } = await import("lib/portrait/prompt");
+    const prompt = buildPortraitPrompt({
+      petName: "Bailey",
+      petType: "Dog",
+      stylePreset: "watercolor",
+      background: "Cream",
+      framing: "Head and shoulders",
+      fidelity: "creative",
+    });
+
+    expect(prompt).toContain("artistic freedom");
   });
 });

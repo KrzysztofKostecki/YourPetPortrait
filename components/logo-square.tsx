@@ -2,22 +2,24 @@ import clsx from "clsx";
 import LogoIcon from "./icons/logo";
 
 export default function LogoSquare({ size }: { size?: "sm" | undefined }) {
+  const isSmall = size === "sm";
+
   return (
-    <div
+    <span
       className={clsx(
-        "flex flex-none items-center justify-center rounded-2xl border border-line bg-white/80 text-accent shadow-sm backdrop-blur-sm dark:border-white/10 dark:bg-white/10 dark:text-gold-soft",
-        {
-          "h-11 w-11": !size,
-          "h-8 w-8 rounded-xl": size === "sm",
-        },
+        "inline-flex flex-none items-center justify-center overflow-hidden rounded-lg bg-canvas/95 dark:bg-gold-soft/90",
+        isSmall ? "size-[2.25rem]" : "size-[3.15rem]",
       )}
     >
       <LogoIcon
-        className={clsx({
-          "h-6 w-6": !size,
-          "h-4 w-4": size === "sm",
-        })}
+        className={clsx(
+          "origin-center text-ink",
+          isSmall
+            ? "h-full w-full translate-y-1.5 scale-[1.35]"
+            : "h-full w-full translate-y-2 scale-[1.4]",
+        )}
+        aria-hidden="true"
       />
-    </div>
+    </span>
   );
 }

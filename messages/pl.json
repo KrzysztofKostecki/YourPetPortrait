@@ -38,7 +38,7 @@
         "aria": "Porównaj oryginalne zdjęcie z namalowanym portretem"
       },
       "plaque": {
-        "title": "„Bailey”",
+        "title": "„Bruno”",
         "subtitle": "Olej na płótnie · 46 × 61 cm"
       },
       "altPrimary": "Portret border collie — wersja fotograficzna i malarska",
@@ -220,7 +220,6 @@
       "uploading": "Naciągamy płótno…",
       "readyHint": "Pięknie. Teraz wybierz styl po prawej i pozwól studiu malować.",
       "plaqueFallback": "Twoje dzieło",
-      "plaqueMedium": "Olej na płótnie",
       "originalThumb": "Zdjęcie",
       "signedOutTitle": "Sztaluga czeka",
       "signedOutHint": "Zaloguj się, aby umieścić zdjęcie i zobaczyć, jak powstaje portret."
@@ -259,16 +258,49 @@
     "revisionPlaceholder": "Opisz poprawkę, np. miększa tekstura futra",
     "revise": "Przemaluj z tą zmianą",
     "thumbnailAlt": "Wersja podglądu",
+    "editor": {
+      "title": "Zobacz obraz",
+      "cropTitle": "Przytnij i obróć",
+      "cropRotate": "Przytnij i obróć",
+      "openFullSize": "Otwórz w pełnym rozmiarze",
+      "rotateLeft": "Obróć w lewo",
+      "rotateRight": "Obróć w prawo",
+      "zoom": "Powiększenie",
+      "cancel": "Anuluj",
+      "save": "Zapisz zmiany",
+      "saving": "Zapisywanie…",
+      "saveError": "Nie udało się zapisać edytowanego obrazu. Spróbuj ponownie.",
+      "close": "Zamknij"
+    },
+    "deleteVersion": "Usuń tę wersję",
+    "deleteVersionConfirm": "Usunąć tę wersję? Tej operacji nie można cofnąć.",
     "addToCart": "Dodaj portret do koszyka",
     "petTypes": {
       "Dog": "Pies",
       "Cat": "Kot"
     },
     "styles": {
-      "classic-oil": "Klasyczny olej",
-      "modern-realistic": "Nowoczesny realizm",
-      "warm-vintage": "Ciepły vintage",
-      "light-impressionist": "Lekki impresjonizm"
+      "oil-painting": "Obraz olejny",
+      "watercolor": "Akwarela",
+      "pencil-sketch": "Szkic ołówkiem",
+      "charcoal": "Węgiel"
+    },
+    "media": {
+      "oil-painting": "Olej na płótnie",
+      "watercolor": "Akwarela na papierze",
+      "pencil-sketch": "Grafit na papierze",
+      "charcoal": "Węgiel na papierze"
+    },
+    "fidelityLabel": "Wierność zdjęciu",
+    "fidelity": {
+      "faithful": {
+        "label": "Wiernie jak na zdjęciu",
+        "description": "Ściśle trzyma się zdjęcia — poza, umaszczenie, kolory."
+      },
+      "creative": {
+        "label": "Swoboda artystyczna",
+        "description": "Artysta może zmienić pozę, światło i kompozycję."
+      }
     },
     "backgrounds": {
       "Neutral gray": "Neutralna szarość",

@@ -1,7 +1,7 @@
 import type { PortraitCartAttributeKey } from "lib/constants";
 import type { CartLineAttribute } from "lib/shopify/types";
 import { PORTRAIT_PROMPT_VERSION } from "./constants";
-import type { StylePresetId } from "./constants";
+import type { FidelityId, StylePresetId } from "./constants";
 
 export type PortraitCartPayload = {
   merchandiseId: string;
@@ -13,6 +13,7 @@ export type PortraitCartPayload = {
   selectedPreviewUrl: string;
   previewSessionId: string;
   stylePreset: StylePresetId;
+  fidelity: FidelityId;
 };
 
 export function buildPortraitCartAttributes(
@@ -27,6 +28,7 @@ export function buildPortraitCartAttributes(
     selectedPreviewUrl: payload.selectedPreviewUrl,
     previewSessionId: payload.previewSessionId,
     stylePreset: payload.stylePreset,
+    fidelity: payload.fidelity,
     promptVersion: PORTRAIT_PROMPT_VERSION,
   };
 

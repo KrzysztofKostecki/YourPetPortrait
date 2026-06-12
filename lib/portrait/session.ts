@@ -1,6 +1,6 @@
 import { randomUUID } from "crypto";
 import { getRedis } from "lib/redis/client";
-import type { StylePresetId } from "./constants";
+import type { FidelityId, StylePresetId } from "./constants";
 
 export type PreviewRecord = {
   id: string;
@@ -18,6 +18,8 @@ export type PortraitSession = {
   stylePreset: StylePresetId;
   background: string;
   framing: string;
+  fidelity?: FidelityId;
+  artistNotes?: string;
   previews: PreviewRecord[];
   selectedPreviewId?: string;
   updatedAt: string;
@@ -54,6 +56,8 @@ export async function createOrUpdateSession(input: {
   stylePreset: StylePresetId;
   background: string;
   framing: string;
+  fidelity?: FidelityId;
+  artistNotes?: string;
 }): Promise<PortraitSession> {
   const existing = input.sessionId
     ? await getPortraitSession(input.sessionId)
@@ -68,6 +72,8 @@ export async function createOrUpdateSession(input: {
     stylePreset: input.stylePreset,
     background: input.background,
     framing: input.framing,
+    fidelity: input.fidelity,
+    artistNotes: input.artistNotes,
     previews: existing?.previews ?? [],
     selectedPreviewId: existing?.selectedPreviewId,
     updatedAt: new Date().toISOString(),
@@ -89,4 +95,41 @@ export async function appendPreview(
   session.updatedAt = new Date().toISOString();
   await savePortraitSession(session);
   return session;
+}
+
+export async function removePreview(
+  sessionId: string,
+  previewId: string,
+): Promise<{ session: PortraitSession; removed: PreviewRecord } | null> {
+  const session = await getPortraitSession(sessionId);
+  if (!session) return null;
+
+  const removed = session.previews.find((entry) => entry.id === previewId);
+  if (!removed) return null;
+
+  session.previews = session.previews.filter((entry) => entry.id !== previewId);
+  if (session.selectedPreviewId === previewId) {
+    session.selectedPreviewId = session.previews.at(-1)?.id;
+  }
+  session.updatedAt = new Date().toISOString();
+  await savePortraitSession(session);
+  return { session, removed };
+}
+
+export async function updatePreviewUrl(
+  sessionId: string,
+  previewId: string,
+  url: string,
+): Promise<{ session: PortraitSession; previousUrl: string } | null> {
+  const session = await getPortraitSession(sessionId);
+  if (!session) return null;
+
+  const preview = session.previews.find((entry) => entry.id === previewId);
+  if (!preview) return null;
+
+  const previousUrl = preview.url;
+  preview.url = url;
+  session.updatedAt = new Date().toISOString();
+  await savePortraitSession(session);
+  return { session, previousUrl };
 }
